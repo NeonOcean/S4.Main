@@ -1,0 +1,64 @@
+[
+	{
+		"Level": -5000,
+
+		"Paths": [
+			{
+				"Root": "Current",
+				"Path": "NeonOcean.Main.ts4script"
+			}
+		],
+
+		"Functions": [
+			{
+				"Module": "NeonOcean.Main.Loading",
+				"Function": "LoadMod",
+				"Arguments": [ "NeonOcean.Main" ],
+				"Keyword Arguments": { }
+			},
+		
+			{
+				"Module": "NeonOcean.Main.Loading",
+				"Function": "LoadMod",
+				"Arguments": [ "NeonOcean.Debug" ],
+				"Keyword Arguments": { }
+			}
+		]
+	},
+	{
+		"Level": -4000,
+
+		"Functions": [
+			{
+				"Module": "NeonOcean.Main.Loading",
+				"Function": "LoadMod",
+				"Arguments": [ "NeonOcean.Time" ],
+				"Keyword Arguments": { }
+			}
+		]
+	},
+	{
+		"Level": -3000,
+
+		"Functions": [
+			{
+				"Module": "NeonOcean.Main.Loading",
+				"Function": "LoadMod",
+				"Arguments": [ "NeonOcean.Cycle" ],
+				"Keyword Arguments": { }
+			}
+		]
+	},
+	{
+		"Level": -2000,
+
+		"Functions": [
+			{
+				"Module": "NeonOcean.Main.Loading",
+				"Function": "LoadMod",
+				"Arguments": [ "NeonOcean.Choreography" ],
+				"Keyword Arguments": { }
+			}
+		]
+	}
+]

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfAntiqueFileList>
+	<AntiqueFileList>
+		<Version>1.0.0</Version>
+		<Files>
+			<string>NeonOcean.Main\License.txt</string>
+			<string>NeonOcean.Main\NeonOcean.Main.ts4script</string>
+			<string>NeonOcean.Main\NeonOcean.Main.zip</string>
+			<string>NeonOcean.Main\NeonOcean.Main-Package.package</string>
+			<string>NeonOcean.Main\NeonOcean.Order-Load-Order.json</string>
+			<string>NeonOcean.Main\Read-Me.txt</string>
+			<string>NeonOcean.Main\Data\Compatibility.json</string>
+			<string>NeonOcean.Main\Data\Version.txt</string>
+		</Files>
+	</AntiqueFileList>
+</ArrayOfAntiqueFileList>

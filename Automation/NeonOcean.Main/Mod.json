@@ -1,0 +1,23 @@
+{
+	"Namespace": "NeonOcean.Main",
+	"Github Name": "Main",
+	"Packages": [
+		{
+			"File Name": "NeonOcean.Main-Package.package",
+			"Merge Root": "NeonOcean.Main"
+		}
+	],
+	"Publishing": {
+		"Installer File Name": "NeonOcean.Main-Installer-v{0}.exe",
+		"Files File Name": "NeonOcean.Main-Files-v{0}.zip",
+		"Sources File Name": "NeonOcean.Main-Sources-v{0}.zip"
+	},
+	"Python": {
+		"Archive File Name": "NeonOcean.Main.ts4script",
+		"Source Root": "",
+		"Source Target": "NeonOcean",
+		"Source Excluded": [],
+		"Merge Root": "NeonOcean.Main"
+	},
+	"Uninstall": "NeonOcean.Main/Uninstall.exe"
+}
