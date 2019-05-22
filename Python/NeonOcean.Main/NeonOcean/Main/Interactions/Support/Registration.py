@@ -126,9 +126,11 @@ def RegisterObjectInteraction (interactionReference: typing.Type, objectReferenc
 		return
 
 	objectReference._super_affordances += (interactionReference,)
-
+	
 def GenerateInteractionInstance (interactionReference: typing.Type) -> object:
 	interactionAOP = aop.AffordanceObjectPair(interactionReference, None, interactionReference, None)
 	interactionContext = context.InteractionContext(None, context.InteractionContext.SOURCE_SCRIPT, priority.Priority.High)
 
 	return interactionReference(aop = interactionAOP, context = interactionContext)
+	
+	

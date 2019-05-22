@@ -1,6 +1,6 @@
 {
 	"Namespace": "NeonOcean.Main",
-	"Github Name": "Main",
+	"Name": "Main",
 	"Packages": [
 		{
 			"File Name": "NeonOcean.Main-Package.package",

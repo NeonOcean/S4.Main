@@ -1,3 +1,4 @@
+NeonOcean.Main\Changes.html
 NeonOcean.Main\Documentation.html
 NeonOcean.Main\Files.txt
 NeonOcean.Main\License.html
@@ -6,5 +7,6 @@ NeonOcean.Main\NeonOcean-Mod.json
 NeonOcean.Main\NeonOcean.Main-Package.package
 NeonOcean.Main\NeonOcean.Main.ts4script
 NeonOcean.Main\NeonOcean.Order-Load_Order.json
+NeonOcean.Main\Plans.html
 NeonOcean.Main\Uninstall.exe
 NeonOcean.Main\Uninstall.exe.config
