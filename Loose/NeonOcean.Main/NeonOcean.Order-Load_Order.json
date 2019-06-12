@@ -26,18 +26,6 @@
 		]
 	},
 	{
-		"Level": -4000,
-
-		"Functions": [
-			{
-				"Module": "NeonOcean.Main.Loading",
-				"Function": "LoadMod",
-				"Arguments": [ "NeonOcean.Time" ],
-				"Keyword Arguments": { }
-			}
-		]
-	},
-	{
 		"Level": -3000,
 
 		"Functions": [
@@ -57,6 +45,18 @@
 				"Module": "NeonOcean.Main.Loading",
 				"Function": "LoadMod",
 				"Arguments": [ "NeonOcean.Choreography" ],
+				"Keyword Arguments": { }
+			}
+		]
+	},
+	{
+		"Level": -100,
+
+		"Functions": [
+			{
+				"Module": "NeonOcean.Main.Loading",
+				"Function": "LoadMod",
+				"Arguments": [ "NeonOcean.Time" ],
 				"Keyword Arguments": { }
 			}
 		]

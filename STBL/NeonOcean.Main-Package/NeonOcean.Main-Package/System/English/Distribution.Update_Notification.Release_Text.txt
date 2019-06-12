@@ -1,4 +1,4 @@
 The currently installed version of this mod has been superseded by a new one.
 
-Release type: Public
+Version type: Release
 Version: {0.String}

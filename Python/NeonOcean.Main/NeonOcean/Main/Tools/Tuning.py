@@ -26,6 +26,6 @@ def LoadModuleTuning (module: types.ModuleType, tuning_filename_or_key: str) -> 
 			if callbackModule is module:
 				callbackCallable()
 		except Exception as e:
-			Debug.Log("Failed to call callback for 'OnLoadedTuning'. Callback: " + Types.GetFullName(callbackCallable) + " Tuned module: " + callbackModule.__name__, This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, exception = e)
+			Debug.Log("Failed to call callback for 'OnLoadedTuning'. Callback: " + Types.GetFullName(callbackCallable) + " Tuned module: " + callbackModule.__name__, This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
 
 _Setup()

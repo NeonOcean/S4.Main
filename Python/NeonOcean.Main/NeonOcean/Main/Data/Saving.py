@@ -62,8 +62,8 @@ class Saving:
 
 			if not isinstance(saveFileData, dict):
 				raise TypeError("Cannot convert file to dictionary.")
-		except Exception as e:
-			Debug.Log("Failed to read '" + Paths.StripUserDataPath(saveFilePath) + "'.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, exception = e)
+		except:
+			Debug.Log("Failed to read '" + Paths.StripUserDataPath(saveFilePath) + "'.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
 			saveFileData = dict()
 
 		for section in list(saveFileData.keys()):  # type: str

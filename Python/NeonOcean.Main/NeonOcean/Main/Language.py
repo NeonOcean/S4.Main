@@ -3,7 +3,7 @@ import typing
 import services
 import snippets
 import zone
-from NeonOcean.Main import Information, Director, This
+from NeonOcean.Main import Director, Information, This
 from NeonOcean.Main.Tools import Exceptions
 from sims4 import localization
 from sims4.tuning import tunable
@@ -75,12 +75,12 @@ class _Identifier:
 		else:
 			return targetIdentifierObject
 
-class _AnnouncerReliable(Director.Controller):
+class _AnnouncerReliable(Director.Announcer):
 	Host = This.Mod
 	Reliable = True  # type: bool
 
 	@classmethod
-	def OnLoadingScreenAnimationFinished(cls, zoneReference: zone.Zone) -> None:
+	def OnLoadingScreenAnimationFinished (cls, zoneReference: zone.Zone) -> None:
 		_LoadEntries()
 
 def GetLocalizationStringByIdentifier (identifier: str, *tokens) -> localization.LocalizedString:
@@ -137,6 +137,9 @@ def CreateLocalizationString (text: str) -> localization.LocalizedString:
 
 	return localization.LocalizationHelperTuning.get_raw_text(text)
 
+def MakeLocalizationStringCallable (string: localization.LocalizedString) -> typing.Callable[[], localization.LocalizedString]:
+	return lambda *args, **kwargs: string
+
 def _SplitIdentifier (identifier: str) -> typing.List[str]:
 	return identifier.split(".")  # type: typing.List[str]
 
@@ -168,6 +171,8 @@ def _LoadEntries () -> None:
 
 					if targetIdentifierObject.StringKey is None:
 						targetIdentifierObject.StringKey = stringKey
+
+	_loadedEntries = True
 
 def _Setup ():
 	global IdentifiersSnippetReference, IdentifiersSnippet

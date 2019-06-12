@@ -1,0 +1,1 @@
+Select from two presets, update checking enabled for all mods or no mods. Alternatively you can change the settings for individual mods by going to 'Customize'. If a mod is enabled, a notification will be shown whenever an update is available.

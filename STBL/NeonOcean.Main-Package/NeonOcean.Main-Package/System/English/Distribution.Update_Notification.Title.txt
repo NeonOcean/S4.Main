@@ -1,2 +1,2 @@
-NeonOcean - {0.String}:
+{0.String}:
 Update Available

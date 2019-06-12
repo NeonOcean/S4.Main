@@ -1,38 +1,18 @@
 {
 	"Namespace": "NeonOcean.Main",
 	"Name": "Main",
-	"Load Controller": "NeonOcean.Main",
+	"LoadController": "NeonOcean.Main",
 	
 	"Author": "NeonOcean",
-	"Version": "1.1.0",
+	"Version": "1.2.0",
 	"Distribution": "NeonOcean",
 	"Rating": "Normal",
 	
-	"Script Paths": [
+	"ScriptPaths": [
 		"NeonOcean.Main/NeonOcean.Main.ts4script"
 	],
 
 	"Requirements": [],
 
-	"Compatibility": {
-		"NeonOcean.Debug": {
-			"Lowest Version": "1.1.0",
-			"Highest Version": "1.1.0"
-		},
-
-		"NeonOcean.Time": {
-			"Lowest Version": "1.0.0",
-			"Highest Version": "1.0.0"
-		},
-
-		"NeonOcean.Cycle": {
-			"Lowest Version": "1.0.0",
-			"Highest Version": "1.0.0"
-		},
-
-		"NeonOcean.Choreography": {
-			"Lowest Version": "1.0.0",
-			"Highest Version": "1.0.0"
-		}
-	}
+	"Compatibility": {}
 }

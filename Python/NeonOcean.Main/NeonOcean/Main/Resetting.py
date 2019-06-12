@@ -39,8 +39,8 @@ def ResetEverything (mod: Mods.Mod) -> bool:
 			if isinstance(OnReset, types.FunctionType):
 				if len(inspect.signature(OnReset).parameters) == 0:
 					OnReset()
-	except Exception as e:
-		Debug.Log("Failed to reset mod.", mod.Namespace, Debug.LogLevels.Exception, group = mod.Namespace, owner = __name__, exception = e)
+	except:
+		Debug.Log("Failed to reset mod.", mod.Namespace, Debug.LogLevels.Exception, group = mod.Namespace, owner = __name__)
 		return False
 
 	return True
@@ -65,8 +65,8 @@ def ResetSettings (mod: Mods.Mod) -> bool:
 			if isinstance(OnReset, types.FunctionType):
 				if len(inspect.signature(OnReset).parameters) == 0:
 					OnReset()
-	except Exception as e:
-		Debug.Log("Failed to reset all settings.", mod.Namespace, Debug.LogLevels.Exception, group = mod.Namespace, owner = __name__, exception = e)
+	except:
+		Debug.Log("Failed to reset all settings.", mod.Namespace, Debug.LogLevels.Exception, group = mod.Namespace, owner = __name__)
 		return False
 
 	return True
@@ -98,16 +98,16 @@ def ShowResetDialog (mod: Mods.Mod) -> None:
 			if dialogReference.response == ui_dialog.ButtonType.DIALOG_RESPONSE_OK:
 				ResetEverything(mod)
 				return
-		except Exception as e:
-			Debug.Log("Failed to run the confirm dialog everything callback for the reset dialog.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, exception = e)
+		except:
+			Debug.Log("Failed to run the confirm dialog everything callback for the reset dialog.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
 
 	def ConfirmDialogSettingsCallback (dialogReference: ui_dialog.UiDialogOkCancel) -> None:
 		try:
 			if dialogReference.response == ui_dialog.ButtonType.DIALOG_RESPONSE_OK:
 				ResetSettings(mod)
 				return
-		except Exception as e:
-			Debug.Log("Failed to run the confirm dialog settings callback for the reset dialog.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, exception = e)
+		except:
+			Debug.Log("Failed to run the confirm dialog settings callback for the reset dialog.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
 
 	def DialogCallback (dialogReference: ui_dialog.UiDialogOkCancel) -> None:
 		try:
@@ -132,7 +132,7 @@ def ShowResetDialog (mod: Mods.Mod) -> None:
 			}  # type: typing.Dict[str, ...]
 
 			Dialogs.ShowOkCancelDialog(callback = confirmDialogCallback, queue = False, **confirmDialogArguments)
-		except Exception as e:
-			Debug.Log("Failed to run the callback for the reset dialog.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, exception = e)
+		except:
+			Debug.Log("Failed to run the callback for the reset dialog.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
 
 	Dialogs.ShowOkDialog(callback = DialogCallback, queue = False, **dialogArguments)
