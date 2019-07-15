@@ -7,7 +7,6 @@ from NeonOcean.Main.Tools import Types
 class SimultaneousCallException(Exception):
 	def __init__ (self, targetFunction: typing.Callable = None):
 		self.TargetFunction = targetFunction  # type: typing.Optional[typing.Callable]
-		pass
 
 	def __str__ (self):
 		if self.TargetFunction is not None:

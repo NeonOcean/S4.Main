@@ -1,4 +1,5 @@
 import traceback
+import abc
 import typing
 
 import services
@@ -15,11 +16,69 @@ PresetConfirmDialogText = Language.String(This.Mod.Namespace + ".System.Setting_
 PresetConfirmDialogYesButton = Language.String(This.Mod.Namespace + ".System.Setting_Dialogs.Preset_Confirm_Dialog.Yes_Button")  # type: Language.String
 PresetConfirmDialogNoButton = Language.String(This.Mod.Namespace + ".System.Setting_Dialogs.Preset_Confirm_Dialog.No_Button")  # type: Language.String
 
+class SettingWrapper(abc.ABC):
+	def __init__(self, setting):
+		self._setting = setting
+
+	@property
+	def Setting (self) -> typing.Any:
+		return self._setting
+
+	@property
+	@abc.abstractmethod
+	def Key (self) -> str: ...
+
+	@abc.abstractmethod
+	def Get (self) -> typing.Any: ...
+
+	@abc.abstractmethod
+	def Set (self, value: typing.Any) -> None: ...
+
+class SettingStandardWrapper(SettingWrapper):
+	def __init__(self, setting: typing.Type[SettingsShared.SettingBase]):
+		super().__init__(setting)
+
+	@property
+	def Setting (self) -> typing.Type[SettingsShared.SettingBase]:
+		return self._setting
+
+	@property
+	def Key (self) -> str:
+		return self.Setting.Key
+
+	def Get (self) -> typing.Any:
+		return self.Setting.Get()
+
+	def Set (self, value: typing.Any) -> None:
+		return self.Setting.Set(value)
+
+class SettingBranchWrapper(SettingWrapper):
+	def __init__(self, setting: typing.Type[SettingsShared.SettingBranchedBase], branch: str):
+		self._branch = branch  # type: str
+
+		super().__init__(setting)
+
+	@property
+	def Setting (self) -> typing.Type[SettingsShared.SettingBranchedBase]:
+		return self._setting
+
+	@property
+	def Branch (self) -> str:
+		return self._branch
+
+	@property
+	def Key (self) -> str:
+		return self.Setting.Key
+
+	def Get (self) -> typing.Any:
+		return self.Setting.Get(self.Branch)
+
+	def Set (self, value: typing.Any) -> None:
+		return self.Setting.Set(self.Branch, value)
+
 class SettingDialog:
 	HostNamespace = This.Mod.Namespace
 	HostName = This.Mod.Name
-
-	_returnCallbacks = dict()  # type: typing.Dict[ui_dialog.UiDialogBase, typing.Callable[[], None]]
 
 	def __init_subclass__ (cls, **kwargs):
 		cls.OnInitializeSubclass()
@@ -29,7 +88,7 @@ class SettingDialog:
 		pass
 
 	@classmethod
-	def ShowDialog (cls, setting: typing.Type[SettingsShared.SettingBase], returnCallback: typing.Callable[[], None] = None, **kwargs) -> None:
+	def ShowDialog (cls, setting: SettingWrapper, returnCallback: typing.Callable[[], None] = None, **kwargs) -> None:
 		if services.current_zone() is None:
 			Debug.Log("Tried to show setting dialog before a zone was loaded\n" + str.join("", traceback.format_stack()), cls.HostNamespace, Debug.LogLevels.Warning, group = cls.HostNamespace, owner = __name__)
 			return
@@ -38,7 +97,7 @@ class SettingDialog:
 
 	@classmethod
 	def _ShowDialogInternal (cls,
-							 setting: typing.Type[SettingsShared.SettingBase],
+							 setting: SettingWrapper,
 							 currentValue: typing.Any,
 							 showDialogArguments: typing.Dict[str, typing.Any],
 							 returnCallback: typing.Callable[[], None] = None,
@@ -48,7 +107,7 @@ class SettingDialog:
 
 	@classmethod
 	def _CreateArguments (cls,
-						  setting: typing.Type[SettingsShared.SettingBase],
+						  setting: SettingWrapper,
 						  currentValue: typing.Any,
 						  showDialogArguments: typing.Dict[str, typing.Any],
 						  *args, **kwargs) -> typing.Dict[str, typing.Any]:
@@ -198,24 +257,24 @@ class StandardDialog(SettingDialog):
 	CancelButton = Language.String(This.Mod.Namespace + ".System.Setting_Dialogs.Cancel_Button")  # type:  Language.String
 
 	@classmethod
-	def GetTitleText (cls, setting: typing.Type[SettingsShared.SettingBase]) -> localization.LocalizedString:
+	def GetTitleText (cls, setting: SettingWrapper) -> localization.LocalizedString:
 		return Language.CreateLocalizationString("")
 
 	@classmethod
-	def GetDescriptionText (cls, setting: typing.Type[SettingsShared.SettingBase]) -> localization.LocalizedString:
+	def GetDescriptionText (cls, setting: SettingWrapper) -> localization.LocalizedString:
 		return Language.CreateLocalizationString("")
 
 	@classmethod
-	def GetDefaultText (cls, setting: typing.Type[SettingsShared.SettingBase]) -> localization.LocalizedString:
+	def GetDefaultText (cls, setting: SettingWrapper) -> localization.LocalizedString:
 		return Language.CreateLocalizationString("")
 
 	@classmethod
-	def GetDocumentationURL (cls, setting: typing.Type[SettingsShared.SettingBase]) -> typing.Optional[str]:
+	def GetDocumentationURL (cls, setting: SettingWrapper) -> typing.Optional[str]:
 		return None
 
 	@classmethod
 	def _ShowDialogInternal (cls,
-							 setting: typing.Type[SettingsShared.SettingBase],
+							 setting: SettingWrapper,
 							 currentValue: typing.Any,
 							 showDialogArguments: typing.Dict[str, typing.Any],
 							 returnCallback: typing.Callable[[], None] = None,
@@ -240,7 +299,7 @@ class StandardDialog(SettingDialog):
 
 	@classmethod
 	def _CreateAcceptButtonCallback (cls,
-									 setting: typing.Type[SettingsShared.SettingBase],
+									 setting: SettingWrapper,
 									 currentValue: typing.Any,
 									 showDialogArguments: typing.Dict[str, typing.Any],
 									 returnCallback: typing.Callable[[], None] = None,
@@ -257,7 +316,7 @@ class StandardDialog(SettingDialog):
 
 	@classmethod
 	def _CreateCancelButtonCallback (cls,
-									 setting: typing.Type[SettingsShared.SettingBase],
+									 setting: SettingWrapper,
 									 currentValue: typing.Any,
 									 showDialogArguments: typing.Dict[str, typing.Any],
 									 returnCallback: typing.Callable[[], None] = None,
@@ -272,7 +331,7 @@ class StandardDialog(SettingDialog):
 
 	@classmethod
 	def _CreateButtons (cls,
-						setting: typing.Type[SettingsShared.SettingBase],
+						setting: SettingWrapper,
 						currentValue: typing.Any,
 						showDialogArguments: typing.Dict[str, typing.Any],
 						returnCallback: typing.Callable[[], None] = None,
@@ -283,7 +342,7 @@ class StandardDialog(SettingDialog):
 
 	@classmethod
 	def _CreateArguments (cls,
-						  setting: typing.Type[SettingsShared.SettingBase],
+						  setting: SettingWrapper,
 						  currentValue: typing.Any,
 						  showDialogArguments: typing.Dict[str, typing.Any],
 						  *args, **kwargs) -> typing.Dict[str, typing.Any]:
@@ -357,7 +416,7 @@ class StandardDialog(SettingDialog):
 class InputDialog(StandardDialog):
 	# noinspection PyUnusedLocal
 	@classmethod
-	def GetInputRestriction (cls, setting: typing.Type[SettingsShared.SettingBase]) -> typing.Optional[localization.LocalizedString]:
+	def GetInputRestriction (cls, setting: SettingWrapper) -> typing.Optional[localization.LocalizedString]:
 		return None
 
 	@classmethod
@@ -366,7 +425,7 @@ class InputDialog(StandardDialog):
 
 	@classmethod
 	def _ShowDialogInternal (cls,
-							 setting: typing.Type[SettingsShared.SettingBase],
+							 setting: SettingWrapper,
 							 currentValue: typing.Any,
 							 showDialogArguments: typing.Dict[str, typing.Any],
 							 returnCallback: typing.Callable[[], None] = None,
@@ -396,7 +455,7 @@ class InputDialog(StandardDialog):
 
 	@classmethod
 	def _CreateAcceptButtonCallback (cls,
-									 setting: typing.Type[SettingsShared.SettingBase],
+									 setting: SettingWrapper,
 									 currentValue: typing.Any,
 									 showDialogArguments: typing.Dict[str, typing.Any],
 									 returnCallback: typing.Callable[[], None] = None,
@@ -408,7 +467,7 @@ class InputDialog(StandardDialog):
 
 			try:
 				dialogInputValue = cls._ParseValueString(dialogInput)
-			except:
+			except Exception:
 				Debug.Log("User tried to change a setting with the text input of '" + dialogInput + "' but this input is invalid.", cls.HostNamespace, Debug.LogLevels.Warning, group = cls.HostNamespace, owner = __name__)
 				cls.ShowInvalidInputNotification(dialogInput)
 				cls._ShowDialogInternal(setting, currentValue, showDialogArguments, returnCallback = returnCallback, currentInput = dialogInput)
@@ -416,7 +475,7 @@ class InputDialog(StandardDialog):
 
 			try:
 				setting.Set(dialogInputValue)
-			except:
+			except Exception:
 				Debug.Log("User tried to change a setting with the text input of '" + dialogInput + "' but this input is invalid.", cls.HostNamespace, Debug.LogLevels.Warning, group = cls.HostNamespace, owner = __name__)
 				cls.ShowInvalidInputNotification(dialogInput)
 				cls._ShowDialogInternal(setting, currentValue, showDialogArguments, returnCallback = returnCallback, currentInput = dialogInput)
@@ -429,7 +488,7 @@ class InputDialog(StandardDialog):
 
 	@classmethod
 	def _CreateButtons (cls,
-						setting: typing.Type[SettingsShared.SettingBase],
+						setting: SettingWrapper,
 						currentValue: typing.Any,
 						showDialogArguments: typing.Dict[str, typing.Any],
 						returnCallback: typing.Callable[[], None] = None,
@@ -440,7 +499,7 @@ class InputDialog(StandardDialog):
 
 	@classmethod
 	def _CreateArguments (cls,
-						  setting: typing.Type[SettingsShared.SettingBase],
+						  setting: SettingWrapper,
 						  currentValue: typing.Any,
 						  showDialogArguments: typing.Dict[str, typing.Any],
 						  *args, **kwargs) -> typing.Dict[str, typing.Any]:
@@ -500,20 +559,20 @@ class PresetDialog(StandardDialog):
 	CustomizeButton = Language.String(This.Mod.Namespace + ".System.Setting_Dialogs.Preset.Customize_Button")  # type: Language.String
 
 	@classmethod
-	def GetTitleText (cls, setting: typing.Type[SettingsShared.SettingBase]) -> localization.LocalizedString:
+	def GetTitleText (cls, setting: SettingWrapper) -> localization.LocalizedString:
 		return Language.CreateLocalizationString("")
 
 	@classmethod
-	def GetDescriptionText (cls, setting: typing.Type[SettingsShared.SettingBase]) -> localization.LocalizedString:
+	def GetDescriptionText (cls, setting: SettingWrapper) -> localization.LocalizedString:
 		return Language.CreateLocalizationString("")
 
 	@classmethod
-	def GetDocumentationURL (cls, setting: typing.Type[SettingsShared.SettingBase]) -> typing.Optional[str]:
+	def GetDocumentationURL (cls, setting: SettingWrapper) -> typing.Optional[str]:
 		return None
 
 	@classmethod
 	def _ShowDialogInternal (cls,
-							 setting: typing.Type[SettingsShared.SettingBase],
+							 setting: SettingWrapper,
 							 currentValue: typing.Any,
 							 showDialogArguments: typing.Dict[str, typing.Any],
 							 returnCallback: typing.Callable[[], None] = None,
@@ -538,7 +597,7 @@ class PresetDialog(StandardDialog):
 	# noinspection PyUnusedLocal
 	@classmethod
 	def _CreateAcceptButtonCallback (cls,
-									 setting: typing.Type[SettingsShared.SettingBase],
+									 setting: SettingWrapper,
 									 currentValue: typing.Any,
 									 showDialogArguments: typing.Dict[str, typing.Any],
 									 returnCallback: typing.Callable[[], None] = None,
@@ -554,7 +613,7 @@ class PresetDialog(StandardDialog):
 	# noinspection PyUnusedLocal
 	@classmethod
 	def _CreateCustomizeButtonCallback (cls,
-										setting: typing.Type[SettingsShared.SettingBase],
+										setting: SettingWrapper,
 										currentValue: typing.Any,
 										showDialogArguments: typing.Dict[str, typing.Any],
 										returnCallback: typing.Callable[[], None] = None,
@@ -568,7 +627,7 @@ class PresetDialog(StandardDialog):
 
 	@classmethod
 	def _CreateButtons (cls,
-						setting: typing.Type[SettingsShared.SettingBase],
+						setting: SettingWrapper,
 						currentValue: typing.Any,
 						showDialogArguments: typing.Dict[str, typing.Any],
 						returnCallback: typing.Callable[[], None] = None,
@@ -590,7 +649,7 @@ class PresetDialog(StandardDialog):
 
 	@classmethod
 	def _CreateArguments (cls,
-						  setting: typing.Type[SettingsShared.SettingBase],
+						  setting: SettingWrapper,
 						  currentValue: typing.Any,
 						  showDialogArguments: typing.Dict[str, typing.Any],
 						  *args, **kwargs) -> typing.Dict[str, typing.Any]:
@@ -659,7 +718,7 @@ class PresetDialog(StandardDialog):
 class DictionaryDialog(StandardDialog):
 	@classmethod
 	def _CreateAcceptButtonCallback (cls,
-									 setting: typing.Type[SettingsShared.SettingBase],
+									 setting: SettingWrapper,
 									 currentValue: typing.Any,
 									 showDialogArguments: typing.Dict[str, typing.Any],
 									 returnCallback: typing.Callable[[], None] = None,
@@ -673,7 +732,7 @@ class DictionaryDialog(StandardDialog):
 
 	@classmethod
 	def _CreateCancelButtonCallback (cls,
-									 setting: typing.Type[SettingsShared.SettingBase],
+									 setting: SettingWrapper,
 									 currentValue: typing.Any,
 									 showDialogArguments: typing.Dict[str, typing.Any],
 									 returnCallback: typing.Callable[[], None] = None,
@@ -690,7 +749,7 @@ class DictionaryDialog(StandardDialog):
 
 	@classmethod
 	def _ShowDialogInternal (cls,
-							 setting: typing.Type[SettingsShared.SettingBase],
+							 setting: SettingWrapper,
 							 currentValue: typing.Any,
 							 showDialogArguments: typing.Dict[str, typing.Any],
 							 returnCallback: typing.Callable[[], None] = None,
@@ -716,7 +775,7 @@ class DictionaryDialog(StandardDialog):
 
 	@classmethod
 	def _CreateRows (cls,
-					 setting: typing.Type[SettingsShared.SettingBase],
+					 setting: SettingWrapper,
 					 currentValue: typing.Any,
 					 showDialogArguments: typing.Dict[str, typing.Any],
 					 returnCallback: typing.Callable[[], None] = None,

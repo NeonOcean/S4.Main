@@ -1,30 +1,42 @@
 import typing
 
 import services
-import zone
 from NeonOcean.Main import Director, This
 from NeonOcean.Main.Tools import Exceptions
 from sims import sim
 from ui import ui_dialog, ui_dialog_generic, ui_dialog_picker
 
+_dialogDisplayable = False  # type: bool
 _queue = list()  # type: typing.List[ui_dialog.UiDialogBase]
 
-class _Announcer(Director.Announcer):
+class _EnableAnnouncer(Director.Announcer):
 	Host = This.Mod
 
 	@classmethod
-	def OnLoadingScreenAnimationFinished (cls, zoneReference: zone.Zone) -> None:
-		global _queue
+	def OnLoadingScreenAnimationFinished (cls, *args, **kwargs) -> None:
+		global _dialogDisplayable, _queue
+
+		_dialogDisplayable = True
 
 		from NeonOcean.Main import Debug
 
 		for dialog in _queue:  # type: ui_dialog.UiDialogBase
 			try:
 				dialog.show_dialog()
-			except:
-				Debug.Log("Failed to show a queued dialog.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
+			except Exception:
+				Debug.Log("Failed to show a queued notification.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
 
 		_queue = list()
+
+class _DisableAnnouncer(Director.Announcer):
+	Host = This.Mod
+
+	Preemptive = True
+
+	@classmethod
+	def OnClientDisconnect (cls, *args, **kwargs) -> None:
+		global _dialogDisplayable
+		_dialogDisplayable = False
 
 def ShowOkDialog (callback: typing.Callable = None, queue: bool = True, **dialogArguments) -> None:
 	"""
@@ -35,6 +47,8 @@ def ShowOkDialog (callback: typing.Callable = None, queue: bool = True, **dialog
 				  The ui dialog service will only run while a zone is loaded.
 	:type queue: bool
 	"""
+
+	global _dialogDisplayable
 
 	if not isinstance(callback, typing.Callable) and callback is not None:
 		raise Exceptions.IncorrectTypeException(callback, "callback", ("Callable",))
@@ -50,9 +64,11 @@ def ShowOkDialog (callback: typing.Callable = None, queue: bool = True, **dialog
 	if callback is not None:
 		dialog.add_listener(callback)
 
-	if services.current_zone() is not None:
+	if services.current_zone() is not None and _dialogDisplayable:
 		dialog.show_dialog()
 	else:
+		_dialogDisplayable = False
+
 		if queue:
 			_queue.append(dialog)
 
@@ -65,6 +81,8 @@ def ShowOkCancelDialog (callback: typing.Callable = None, queue: bool = True, **
 				  The ui dialog service will only run while a zone is loaded.
 	:type queue: bool
 	"""
+
+	global _dialogDisplayable
 
 	if not isinstance(callback, typing.Callable) and callback is not None:
 		raise Exceptions.IncorrectTypeException(callback, "callback", ("Callable",))
@@ -80,9 +98,11 @@ def ShowOkCancelDialog (callback: typing.Callable = None, queue: bool = True, **
 	if callback is not None:
 		dialog.add_listener(callback)
 
-	if services.current_zone() is not None:
+	if services.current_zone() is not None and _dialogDisplayable:
 		dialog.show_dialog()
 	else:
+		_dialogDisplayable = False
+
 		if queue:
 			_queue.append(dialog)
 
@@ -95,6 +115,8 @@ def ShowOkInputDialog (callback: typing.Callable = None, queue: bool = True, **d
 				  The ui dialog service will only run while a zone is loaded.
 	:type queue: bool
 	"""
+
+	global _dialogDisplayable
 
 	if not isinstance(callback, typing.Callable) and callback is not None:
 		raise Exceptions.IncorrectTypeException(callback, "callback", ("Callable",))
@@ -110,9 +132,11 @@ def ShowOkInputDialog (callback: typing.Callable = None, queue: bool = True, **d
 	if callback is not None:
 		dialog.add_listener(callback)
 
-	if services.current_zone() is not None:
+	if services.current_zone() is not None and _dialogDisplayable:
 		dialog.show_dialog()
 	else:
+		_dialogDisplayable = False
+
 		if queue:
 			_queue.append(dialog)
 
@@ -125,6 +149,8 @@ def ShowOkCancelInputDialog (callback: typing.Callable = None, queue: bool = Tru
 				  The ui dialog service will only run while a zone is loaded.
 	:type queue: bool
 	"""
+
+	global _dialogDisplayable
 
 	if not isinstance(callback, typing.Callable) and callback is not None:
 		raise Exceptions.IncorrectTypeException(callback, "callback", ("Callable",))
@@ -140,9 +166,11 @@ def ShowOkCancelInputDialog (callback: typing.Callable = None, queue: bool = Tru
 	if callback is not None:
 		dialog.add_listener(callback)
 
-	if services.current_zone() is not None:
+	if services.current_zone() is not None and _dialogDisplayable:
 		dialog.show_dialog()
 	else:
+		_dialogDisplayable = False
+
 		if queue:
 			_queue.append(dialog)
 
@@ -177,4 +205,3 @@ def ShowObjectPickerDialog (callback: typing.Callable = None, pickerRows: list =
 		dialog.add_listener(callback)
 
 	dialog.show_dialog()
-

@@ -146,6 +146,30 @@
 			<T n="value">1483791726</T>
 		</U>
 		<U>
+			<T n="key">NeonOcean.Main.System.Saving.Failure_Notifications.Load_Text</T>
+			<T n="value">1327250903</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.Main.System.Saving.Failure_Notifications.Save_Text</T>
+			<T n="value">4201284989</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.Main.System.Saving.Failure_Notifications.Title</T>
+			<T n="value">1319045633</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.Main.System.Saving.Failure_Notifications.Unload_Text</T>
+			<T n="value">4168885570</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.Main.System.Saving.Warning_Notifications.Mismatch_Text</T>
+			<T n="value">854024124</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.Main.System.Saving.Warning_Notifications.Title</T>
+			<T n="value">2570050120</T>
+		</U>
+		<U>
 			<T n="key">NeonOcean.Main.System.Settings.Boolean.False</T>
 			<T n="value">197274219</T>
 		</U>

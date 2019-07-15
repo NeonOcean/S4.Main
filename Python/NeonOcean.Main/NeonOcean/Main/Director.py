@@ -1,16 +1,20 @@
 import typing
 
 import zone
-from NeonOcean.Main import Debug, This, Mods
-from NeonOcean.Main.Tools import Exceptions, Patcher, Types
+from NeonOcean.Main import Mods, This
+from NeonOcean.Main.Tools import Exceptions
+from protocolbuffers import FileSerialization_pb2
+from server import client as clientModule
 from sims4.tuning import instance_manager
 
-_announcer = list()  # type: typing.List[typing.Type[Announcer]]
+_announcers = list()  # type: typing.List[typing.Type[Announcer]]
 
 class Announcer:
 	Host = This.Mod  # type: Mods.Mod
 	Enabled = True  # type: bool
-	Reliable = False  # type: bool
+
+	Reliable = False  # type: bool  # Whether the announcer will be called if the host is disabled.
+	Preemptive = False  # type: bool  # Whether the annoucnment methods are called before or after the function they are announcing.
 
 	_level = 0  # type: float
 
@@ -27,78 +31,59 @@ class Announcer:
 		_SortAnnouncer()
 
 	@classmethod
-	def OnInitializeSubclass (cls) -> None:
-		pass
-
-	@classmethod
-	def OnInstanceManagerLoaded (cls, instanceManager: instance_manager.InstanceManager) -> None:
+	def InstanceManagerOnStart (cls, instanceManager: instance_manager.InstanceManager) -> None:
 		pass
 
 	@classmethod
 	def OnLoadingScreenAnimationFinished (cls, zoneReference: zone.Zone) -> None:
 		pass
 
+	@classmethod
+	def OnClientConnect (cls, clientReference: clientModule.Client) -> None:
+		pass
+
+	@classmethod
+	def OnClientDisconnect (cls, clientReference: clientModule.Client) -> None:
+		pass
+
+	@classmethod
+	def OnEnterMainMenu (cls) -> None:
+		pass
+
+	@classmethod
+	def ZoneLoad (cls, zoneReference: zone.Zone) -> None:
+		pass
+
+	@classmethod
+	def ZoneSave (cls, zoneReference: zone.Zone, saveSlotData: typing.Optional[FileSerialization_pb2.SaveSlotData] = None) -> None:
+		pass
+
+	@classmethod
+	def ZoneOnToreDown (cls, zoneReference: zone.Zone, clientReference: clientModule.Client) -> None:
+		pass
+
+def GetAllAnnouncers () -> typing.List[typing.Type[Announcer]]:
+	return list(_announcers)
+
 def SetupAnnouncer (announcer: typing.Type[Announcer]) -> None:
 	if not issubclass(announcer, Announcer):
 		raise Exceptions.IncorrectTypeException(announcer, "announcer", (Announcer,))
 
-	if announcer in _announcer:
+	if announcer in _announcers:
 		return
 
 	_Register(announcer)
 
 	_SortAnnouncer()
-	OnInitializeSubclass()
-
-def OnInitializeSubclass () -> None:
-	for announcer in _announcer:  # type: typing.Type[Announcer]
-		try:
-			if not announcer.Enabled:
-				continue
-
-			if not announcer.Host.IsLoaded() and not announcer.Reliable:
-				continue
-
-			announcer.OnInitializeSubclass()
-		except:
-			Debug.Log("Failed to run 'OnInitializeSubclass' for '" + Types.GetFullName(announcer) + "'", announcer.Host.Namespace, Debug.LogLevels.Exception, group = announcer.Host.Namespace, owner = __name__)
-
-@Patcher.Decorator(instance_manager.InstanceManager, "on_start", permanent = True)
-def OnInstanceManagerLoaded (self: instance_manager.InstanceManager) -> None:
-	for announcer in _announcer:  # type: typing.Type[Announcer]
-		try:
-			if not announcer.Enabled:
-				continue
-
-			if not announcer.Host.IsLoaded() and not announcer.Reliable:
-				continue
-
-			announcer.OnInstanceManagerLoaded(self)
-		except:
-			Debug.Log("Failed to run 'OnInstanceManagerLoaded' for '" + Types.GetFullName(announcer) + "'", announcer.Host.Namespace, Debug.LogLevels.Exception, group = announcer.Host.Namespace, owner = __name__)
-
-@Patcher.Decorator(zone.Zone, "on_loading_screen_animation_finished", permanent = True)
-def OnLoadingScreenAnimationFinished (self: zone.Zone) -> None:
-	for announcer in _announcer:  # type: typing.Type[Announcer]
-		try:
-			if not announcer.Enabled:
-				continue
-
-			if not announcer.Host.IsLoaded() and not announcer.Reliable:
-				continue
-
-			announcer.OnLoadingScreenAnimationFinished(self)
-		except:
-			Debug.Log("Failed to run 'OnLoadingScreenAnimationFinished' for '" + Types.GetFullName(announcer) + "'", announcer.Host.Namespace, Debug.LogLevels.Exception, group = announcer.Host.Namespace, owner = __name__)
 
 def _Register (announcer: typing.Type[Announcer]) -> None:
-	if not announcer in _announcer:
-		_announcer.append(announcer)
+	if not announcer in _announcers:
+		_announcers.append(announcer)
 
 def _SortAnnouncer () -> None:
-	global _announcer
+	global _announcers
 
-	announcer = _announcer.copy()  # type: typing.List[typing.Type[Announcer]]
+	announcer = _announcers.copy()  # type: typing.List[typing.Type[Announcer]]
 
 	sortedAnnouncer = list()
 
@@ -122,4 +107,4 @@ def _SortAnnouncer () -> None:
 		sortedAnnouncer.append(announcer[targetIndex])
 		announcer.pop(targetIndex)
 
-		_announcer = sortedAnnouncer
+		_announcers = sortedAnnouncer

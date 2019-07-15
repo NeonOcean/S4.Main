@@ -1,3 +1,29 @@
+## v1.3.0 (July 15, 2019)
+### New Features
+- New systems now allow for the saving of data that is tied to a Sims 4 save file.
+- The director's announcer now has a bunch more announcement capabilities.  
+- It is now possible to patch a function directly, meaning can you input the original and target callables and receive the patch as the output.
+- The interaction object registration system now supports the ability to determine what each object is and should run much faster.
+- Mod information files now allow for specification of version display strings. These are only used for display, this will not allow for an internal version number outside the standard Major.Minor.Patch.Build format.
+- The distribution system now also supports version display strings, these will be shown on mod update notifications as the next version number if the value exists.
+
+
+### Changes
+- All of Main's interactions will now only show up when clicking on Sims instead of everything.
+- Changed the way persistent files are formatted, this will likely cause settings to reset.
+- The persistent class changed to become more extendable, you will also now need to specify the class as "PersistentFile" instead of just "Persistent" to save data to a file.
+- Made distribution system's version and promotion file reading is more forgiving; if sections of the files cannot be read they will be ignored instead.
+- Setting dialogs now take setting wrapper objects instead of the setting directly.
+- ####Mod Information Files
+	- The values "Rating", "ScriptPaths", "Requirements" and "Compatibility" in the mod file's root are no longer required to exist.
+	- 'ScriptPaths' values can now be dictionaries along with strings. Using a dictionary will allow you to specify the root of the script path. Check the documentation for details, if the page exists yet.
+
+### Fixed bugs
+- Patching now correctly preserves the original callable's parameters. Previously, in certain cases such as using the "getfullargspec" function in the inspect module, it would incorrectly show the wrapper's parameters instead of the original's.
+- Modules named \_\_init\_\_ are no longer imported twice.
+
+______________________________
+
 ## v1.2.0 (June 12, 2019)
 ### New Features
 - The distribution system is now available as a tool instead being only usable by this mod.

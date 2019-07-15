@@ -23,7 +23,7 @@ def ShowOpenBrowserDialog (url: str) -> None:
 		try:
 			if dialogReference.response == ui_dialog.ButtonType.DIALOG_RESPONSE_OK:
 				webbrowser.open(url, new = 2)
-		except:
+		except Exception:
 			Debug.Log("Failed to run the callback for the open browser dialog.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
 
 	Dialogs.ShowOkCancelDialog(callback = DialogCallback, queue = False, **dialogArguments)

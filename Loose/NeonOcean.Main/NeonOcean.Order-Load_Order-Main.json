@@ -1,0 +1,21 @@
+[
+	{
+		"Level": -5000,
+
+		"Paths": [
+			{
+				"Root": "Current",
+				"Path": "NeonOcean.Main.ts4script"
+			}
+		],
+
+		"Functions": [
+			{
+				"Module": "NeonOcean.Main.Loading",
+				"Function": "LoadMod",
+				"Arguments": [ "NeonOcean.Main" ],
+				"KeywordArguments": { }
+			}
+		]
+	}
+]

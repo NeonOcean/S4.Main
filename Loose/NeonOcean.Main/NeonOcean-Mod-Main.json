@@ -4,15 +4,14 @@
 	"LoadController": "NeonOcean.Main",
 	
 	"Author": "NeonOcean",
-	"Version": "1.2.0",
+	"Version": "1.3.0",
 	"Distribution": "NeonOcean",
 	"Rating": "Normal",
 	
 	"ScriptPaths": [
-		"NeonOcean.Main/NeonOcean.Main.ts4script"
-	],
-
-	"Requirements": [],
-
-	"Compatibility": {}
+		{
+			"Root": "Current",
+			"Path": "NeonOcean.Main.ts4script"
+		}
+	]
 }

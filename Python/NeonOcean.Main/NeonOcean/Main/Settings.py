@@ -10,7 +10,7 @@ from ui import ui_dialog
 
 SettingsPath = os.path.join(This.Mod.PersistentPath, "Settings.json")  # type: str
 
-_settings = None  # type: Persistence.Persistent
+_settings = None  # type: Persistence.PersistentFile
 _allSettings = list()  # type: typing.List[typing.Type[Setting]]
 
 class Setting(SettingsShared.SettingBase):
@@ -37,7 +37,7 @@ class Setting(SettingsShared.SettingBase):
 			   cls.Verify)
 
 	@classmethod
-	def isSetup (cls) -> bool:
+	def IsSetup (cls) -> bool:
 		return _isSetup(cls.Key)
 
 	@classmethod
@@ -50,7 +50,7 @@ class Setting(SettingsShared.SettingBase):
 
 	@classmethod
 	def Reset (cls) -> None:
-		Reset(cls.Key)
+		_Reset(key = cls.Key)
 
 	@classmethod
 	def Verify (cls, value: typing.Any, lastChangeVersion: Version.Version = None) -> typing.Any:
@@ -68,11 +68,16 @@ class Setting(SettingsShared.SettingBase):
 		if cls.Dialog is None:
 			return
 
-		cls.Dialog.ShowDialog(cls)
+		settingWrapper = SettingsUI.SettingStandardWrapper(cls)  # type: SettingsUI.SettingStandardWrapper
+		cls.Dialog.ShowDialog(settingWrapper)
 
 	@classmethod
 	def GetName (cls) -> localization.LocalizedString:
 		return Language.GetLocalizationStringByIdentifier(This.Mod.Namespace + ".System.Settings.Values." + cls.Key + ".Name")
+
+	@classmethod
+	def _OnLoaded (cls) -> None:
+		pass
 
 class BooleanSetting(Setting):
 	Type = bool
@@ -95,24 +100,24 @@ class BooleanDialogSetting(BooleanSetting):
 		Values = [False, True]  # type: typing.List[bool]
 
 		@classmethod
-		def GetTitleText (cls, setting: typing.Type[SettingsShared.SettingBase]) -> localization.LocalizedString:
-			return setting.GetName()
+		def GetTitleText (cls, setting: SettingsUI.SettingStandardWrapper) -> localization.LocalizedString:
+			return setting.Setting.GetName()
 
 		@classmethod
-		def GetDescriptionText (cls, setting: typing.Type[SettingsShared.SettingBase]) -> localization.LocalizedString:
+		def GetDescriptionText (cls, setting: SettingsUI.SettingStandardWrapper) -> localization.LocalizedString:
 			return Language.GetLocalizationStringByIdentifier(This.Mod.Namespace + ".System.Settings.Values." + setting.Key + ".Description")
 
 		@classmethod
-		def GetDefaultText (cls, setting: typing.Type[SettingsShared.SettingBase]) -> localization.LocalizedString:
-			return Language.GetLocalizationStringByIdentifier(This.Mod.Namespace + ".System.Settings.Boolean." + str(setting.Default))
+		def GetDefaultText (cls, setting: SettingsUI.SettingStandardWrapper) -> localization.LocalizedString:
+			return Language.GetLocalizationStringByIdentifier(This.Mod.Namespace + ".System.Settings.Boolean." + str(setting.Setting.Default))
 
 		@classmethod
-		def GetDocumentationURL (cls, setting: typing.Type[SettingsShared.SettingBase]) -> typing.Optional[str]:
-			return Websites.GetNODocumentationSettingURL(setting, This.Mod)
+		def GetDocumentationURL (cls, setting: SettingsUI.SettingStandardWrapper) -> typing.Optional[str]:
+			return Websites.GetNODocumentationModSettingURL(setting.Setting, This.Mod)
 
 		@classmethod
 		def _CreateButtons (cls,
-							setting: typing.Type[SettingsShared.SettingBase],
+							setting: SettingsUI.SettingStandardWrapper,
 							currentValue: typing.Any,
 							showDialogArguments: typing.Dict[str, typing.Any],
 							returnCallback: typing.Callable[[], None] = None,
@@ -157,7 +162,7 @@ class CheckUpdatesSetting(Setting):
 
 		for valueKey, valueValue in value.items():  # type: str, bool
 			if not isinstance(valueKey, str):
-				raise Exceptions.IncorrectTypeException(valueKey, "value[Key]", (str,))
+				raise Exceptions.IncorrectTypeException(valueKey, "value<Key>", (str,))
 
 			if not isinstance(valueValue, bool):
 				raise Exceptions.IncorrectTypeException(valueValue, "value[%s]" % valueKey, (str,))
@@ -175,16 +180,16 @@ class CheckUpdatesDialogSetting(CheckUpdatesSetting):
 		NoModsEnabledButton = Language.String(This.Mod.Namespace + ".System.Setting_Dialogs.Check_Updates.No_Mods_Enabled_Button")  # type: Language.String
 
 		@classmethod
-		def GetTitleText (cls, setting: typing.Type[SettingsShared.SettingBase]) -> localization.LocalizedString:
-			return setting.GetName()
+		def GetTitleText (cls, setting: SettingsUI.SettingStandardWrapper) -> localization.LocalizedString:
+			return setting.Setting.GetName()
 
 		@classmethod
-		def GetDescriptionText (cls, setting: typing.Type[SettingsShared.SettingBase]) -> localization.LocalizedString:
+		def GetDescriptionText (cls, setting: SettingsUI.SettingStandardWrapper) -> localization.LocalizedString:
 			return Language.GetLocalizationStringByIdentifier(This.Mod.Namespace + ".System.Settings.Values." + setting.Key + ".Preset_Description")
 
 		@classmethod
-		def GetDocumentationURL (cls, setting: typing.Type[SettingsShared.SettingBase]) -> typing.Optional[str]:
-			return Websites.GetNODocumentationSettingURL(setting, This.Mod)
+		def GetDocumentationURL (cls, setting: SettingsUI.SettingStandardWrapper) -> typing.Optional[str]:
+			return Websites.GetNODocumentationModSettingURL(setting.Setting, This.Mod)
 
 		@classmethod
 		def _CreateCustomizeButtonCallback (cls,
@@ -200,13 +205,13 @@ class CheckUpdatesDialogSetting(CheckUpdatesSetting):
 				def CustomizeDialogReturnCallback () -> None:
 					cls.ShowDialog(setting, returnCallback = returnCallback)
 
-				setting.DictionaryDialog.ShowDialog(setting, returnCallback = CustomizeDialogReturnCallback)
+				setting.Setting.DictionaryDialog.ShowDialog(setting, returnCallback = CustomizeDialogReturnCallback)
 
 			return CustomizeButtonCallback
 
 		@classmethod
 		def _CreateButtons (cls,
-							setting: typing.Type[SettingsShared.SettingBase],
+							setting: SettingsUI.SettingStandardWrapper,
 							currentValue: typing.Any,
 							showDialogArguments: typing.Dict[str, typing.Any],
 							returnCallback: typing.Callable[[], None] = None,
@@ -300,29 +305,29 @@ class CheckUpdatesDialogSetting(CheckUpdatesSetting):
 		DisabledIcon = resources.ResourceKeyWrapper("00B2D882:00000000:A4DB6EBAE174821B")
 
 		@classmethod
-		def GetTitleText (cls, setting: typing.Type[SettingsShared.SettingBase]) -> localization.LocalizedString:
-			return setting.GetName()
+		def GetTitleText (cls, setting: SettingsUI.SettingStandardWrapper) -> localization.LocalizedString:
+			return setting.Setting.GetName()
 
 		@classmethod
-		def GetDescriptionText (cls, setting: typing.Type[SettingsShared.SettingBase]) -> localization.LocalizedString:
+		def GetDescriptionText (cls, setting: SettingsUI.SettingStandardWrapper) -> localization.LocalizedString:
 			return Language.GetLocalizationStringByIdentifier(This.Mod.Namespace + ".System.Settings.Values." + setting.Key + ".Description")
 
 		@classmethod
-		def GetDefaultText (cls, setting: typing.Type[SettingsShared.SettingBase]) -> localization.LocalizedString:
+		def GetDefaultText (cls, setting: SettingsUI.SettingStandardWrapper) -> localization.LocalizedString:
 			return Language.GetLocalizationStringByIdentifier(This.Mod.Namespace + ".System.Settings.Boolean." + str(cls.DefaultSetting.Get()))
 
 		@classmethod
-		def GetDocumentationURL (cls, setting: typing.Type[SettingsShared.SettingBase]) -> typing.Optional[str]:
-			return Websites.GetNODocumentationSettingURL(setting, This.Mod)
+		def GetDocumentationURL (cls, setting: SettingsUI.SettingStandardWrapper) -> typing.Optional[str]:
+			return Websites.GetNODocumentationModSettingURL(setting.Setting, This.Mod)
 
 		@classmethod
-		def GetKeyText (cls, setting: typing.Type[SettingsShared.SettingBase], mod: Mods.Mod) -> localization.LocalizedString:
+		def GetKeyText (cls, setting: SettingsUI.SettingStandardWrapper, mod: Mods.Mod) -> localization.LocalizedString:
 			keyTemplate = Language.String(This.Mod.Namespace + ".System.Settings.Values." + setting.Key + ".Key_Template")  # type: Language.String
 			return keyTemplate.GetLocalizationString(mod.Name, mod.Author)
 
 		@classmethod
 		def _CreateRows (cls,
-						 setting: typing.Type[SettingsShared.SettingBase],
+						 setting: SettingsUI.SettingStandardWrapper,
 						 currentValue: typing.Any,
 						 showDialogArguments: typing.Dict[str, typing.Any],
 						 returnCallback: typing.Callable[[], None] = None,
@@ -374,30 +379,35 @@ class CheckForUpdatesDefault(BooleanDialogSetting):
 	Default = True
 
 	@classmethod
-	def Set (cls, value: typing.Any, autoSave: bool = True, autoUpdate: bool = True) -> None:
-		settingIsSetup = cls.isSetup()  # type: bool
-		updatesSettingIsSetup = CheckUpdatesSetting.isSetup()  # type: bool
-
-		currentValue = None  # type: bool
-		checkUpdatesDictionary = None  # type: typing.Dict[str, bool]
-
-		if settingIsSetup and updatesSettingIsSetup:
-			currentValue = cls.Get()  # type: bool
-			checkUpdatesDictionary = CheckForUpdates.Get()  # type: typing.Dict[str, bool]
-
+	def Set (cls, value: bool, autoSave: bool = True, autoUpdate: bool = True) -> None:
 		super().Set(value, autoSave = autoSave, autoUpdate = autoUpdate)
+		cls._ApplyDefault(autoSave = autoSave, autoUpdate = autoUpdate)
 
-		if settingIsSetup and updatesSettingIsSetup:
-			if not currentValue and value:
-				for mod in Mods.GetAllMods():  # type: Mods.Mod
-					if mod.Namespace not in checkUpdatesDictionary:
-						checkUpdatesDictionary[mod.Namespace] = False
-			elif currentValue and not value:
-				for mod in Mods.GetAllMods():  # type: Mods.Mod
-					if mod.Namespace not in checkUpdatesDictionary:
-						checkUpdatesDictionary[mod.Namespace] = True
+	@classmethod
+	def Reset(cls) -> None:
+		super().Reset()
+		cls._ApplyDefault()
 
-		CheckForUpdates.Set(checkUpdatesDictionary, autoSave = autoSave, autoUpdate = autoUpdate)
+	@classmethod
+	def _ApplyDefault (cls, autoSave: bool = True, autoUpdate: bool = True) -> None:
+		updatesSetting = CheckForUpdates  # type: Setting
+
+		updatesValueChanged = False  # type: bool
+
+		if cls.IsSetup() and updatesSetting.IsSetup():
+			currentValue = cls.Get()  # type: bool
+			currentUpdatesValue = updatesSetting.Get()  # type: typing.Dict[str, bool]
+
+			for mod in Mods.GetAllMods():  # type: Mods.Mod
+				if mod.Distribution is None:
+					continue
+
+				if mod.Namespace not in currentUpdatesValue:
+					currentUpdatesValue[mod.Namespace] = currentValue
+					updatesValueChanged = True
+
+			if updatesValueChanged:
+				updatesSetting.Set(currentUpdatesValue, autoSave = autoSave, autoUpdate = autoUpdate)
 
 class CheckForUpdates(CheckUpdatesDialogSetting):
 	IsSetting = True  # type: bool
@@ -411,6 +421,26 @@ class CheckForUpdates(CheckUpdatesDialogSetting):
 	class DictionaryDialog(CheckUpdatesDialogSetting.DictionaryDialog):
 		DefaultSetting = CheckForUpdatesDefault
 
+	@classmethod
+	def _OnLoaded(cls) -> None:
+		defaultSetting = CheckForUpdatesDefault  # type: Setting
+
+		currentValue = cls.Get()  # type: typing.Dict[str, bool]
+		defaultValue = defaultSetting.Get()  # type: bool
+
+		currentValueChanged = False  # type: bool
+
+		for mod in Mods.GetAllMods():  # type: Mods.Mod
+			if mod.Distribution is None:
+				continue
+
+			if mod.Namespace not in currentValue:
+				currentValue[mod.Namespace] = defaultValue
+				currentValueChanged = True
+
+		if currentValueChanged:
+			cls.Set(currentValue)
+
 class CheckForPreviewUpdatesDefault(BooleanDialogSetting):
 	IsSetting = True
 
@@ -418,30 +448,35 @@ class CheckForPreviewUpdatesDefault(BooleanDialogSetting):
 	Default = False
 
 	@classmethod
-	def Set (cls, value: typing.Any, autoSave: bool = True, autoUpdate: bool = True) -> None:
-		settingIsSetup = cls.isSetup()  # type: bool
-		checkPreviewUpdatesSettingIsSetup = CheckForPreviewUpdates.isSetup()  # type: bool
-
-		currentValue = None  # type: bool
-		checkPreviewUpdatesDictionary = None  # type: typing.Dict[str, bool]
-
-		if settingIsSetup and checkPreviewUpdatesSettingIsSetup:
-			currentValue = cls.Get()  # type: bool
-			checkPreviewUpdatesDictionary = CheckForPreviewUpdates.Get()  # type: typing.Dict[str, bool]
-
+	def Set (cls, value: bool, autoSave: bool = True, autoUpdate: bool = True) -> None:
 		super().Set(value, autoSave = autoSave, autoUpdate = autoUpdate)
+		cls._ApplyDefault(autoSave = autoSave, autoUpdate = autoUpdate)
 
-		if settingIsSetup and checkPreviewUpdatesSettingIsSetup:
-			if not currentValue and value:
-				for mod in Mods.GetAllMods():  # type: Mods.Mod
-					if mod.Namespace not in checkPreviewUpdatesDictionary:
-						checkPreviewUpdatesDictionary[mod.Namespace] = False
-			elif currentValue and not value:
-				for mod in Mods.GetAllMods():  # type: Mods.Mod
-					if mod.Namespace not in checkPreviewUpdatesDictionary:
-						checkPreviewUpdatesDictionary[mod.Namespace] = True
+	@classmethod
+	def Reset(cls) -> None:
+		super().Reset()
+		cls._ApplyDefault()
 
-			CheckForPreviewUpdates.Set(checkPreviewUpdatesDictionary, autoSave = autoSave, autoUpdate = autoUpdate)
+	@classmethod
+	def _ApplyDefault (cls, autoSave: bool = True, autoUpdate: bool = True) -> None:
+		updatesSetting = CheckForPreviewUpdates  # type: Setting
+
+		updatesValueChanged = False  # type: bool
+
+		if cls.IsSetup() and updatesSetting.IsSetup():
+			currentValue = cls.Get()  # type: bool
+			currentUpdatesValue = updatesSetting.Get()  # type: typing.Dict[str, bool]
+
+			for mod in Mods.GetAllMods():  # type: Mods.Mod
+				if mod.Distribution is None:
+					continue
+
+				if mod.Namespace not in currentUpdatesValue:
+					currentUpdatesValue[mod.Namespace] = currentValue
+					updatesValueChanged = True
+
+			if updatesValueChanged:
+				updatesSetting.Set(currentUpdatesValue, autoSave = autoSave, autoUpdate = autoUpdate)
 
 class CheckForPreviewUpdates(CheckUpdatesDialogSetting):
 	IsSetting = True  # type: bool
@@ -454,6 +489,26 @@ class CheckForPreviewUpdates(CheckUpdatesDialogSetting):
 
 	class DictionaryDialog(CheckUpdatesDialogSetting.DictionaryDialog):
 		DefaultSetting = CheckForPreviewUpdatesDefault
+
+	@classmethod
+	def _OnLoaded(cls) -> None:
+		defaultSetting = CheckForPreviewUpdatesDefault  # type: Setting
+
+		currentValue = cls.Get()  # type: typing.Dict[str, bool]
+		defaultValue = defaultSetting.Get()  # type: bool
+
+		currentValueChanged = False  # type: bool
+
+		for mod in Mods.GetAllMods():  # type: Mods.Mod
+			if mod.Distribution is None:
+				continue
+
+			if mod.Namespace not in currentValue:
+				currentValue[mod.Namespace] = defaultValue
+				currentValueChanged = True
+
+		if currentValueChanged:
+			cls.Set(currentValue)
 
 class ShowPromotions(BooleanDialogSetting):
 	IsSetting = True  # type: bool
@@ -470,9 +525,6 @@ def Load () -> None:
 def Save () -> None:
 	_settings.Save()
 
-def Reset (key: str = None) -> None:
-	_settings.Reset(key = key)
-
 def Update () -> None:
 	_settings.Update()
 
@@ -482,6 +534,12 @@ def RegisterUpdate (update: typing.Callable) -> None:
 def UnregisterUpdate (update: typing.Callable) -> None:
 	_settings.UnregisterUpdate(update)
 
+def RegisterLoadCallback (callback: typing.Callable) -> None:
+	_settings.RegisterLoadCallback(callback)
+
+def UnregisterLoadCallback (callback: typing.Callable) -> None:
+	_settings.UnregisterLoadCallback(callback)
+
 def _OnInitiate (cause: LoadingShared.LoadingCauses) -> None:
 	global _settings
 
@@ -489,10 +547,12 @@ def _OnInitiate (cause: LoadingShared.LoadingCauses) -> None:
 		pass
 
 	if _settings is None:
-		_settings = Persistence.Persistent(SettingsPath, This.Mod.Version, hostNamespace = This.Mod.Namespace)
+		_settings = Persistence.PersistentFile(SettingsPath, This.Mod.Version, hostNamespace = This.Mod.Namespace, alwaysSaveValues = True)
 
 		for setting in _allSettings:
 			setting.Setup()
+
+		RegisterLoadCallback(_LoadCallback)
 
 	Load()
 
@@ -502,23 +562,35 @@ def _OnUnload (cause: LoadingShared.UnloadingCauses) -> None:
 
 	try:
 		Save()
-	except:
+	except Exception:
 		Debug.Log("Failed to save settings.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__)
 
 def _OnReset () -> None:
-	Reset()
+	for setting in GetAllSettings():  # type: Setting
+		setting.Reset()
 
 def _OnResetSettings () -> None:
-	Reset()
+	for setting in GetAllSettings():  # type: Setting
+		setting.Reset()
 
 def _Setup (key: str, valueType: type, default, verify: typing.Callable) -> None:
 	_settings.Setup(key, valueType, default, verify)
 
 def _isSetup (key: str) -> bool:
-	return _settings.isSetup(key)
+	return _settings.IsSetup(key)
 
 def _Get (key: str) -> typing.Any:
 	return _settings.Get(key)
 
 def _Set (key: str, value: typing.Any, autoSave: bool = True, autoUpdate: bool = True) -> None:
 	_settings.Set(key, value, autoSave = autoSave, autoUpdate = autoUpdate)
+
+def _Reset (key: str = None) -> None:
+	_settings.Reset(key = key)
+
+def _LoadCallback () -> None:
+	for setting in _allSettings:  # type: Setting
+		try:
+			setting._OnLoaded()
+		except Exception:
+			Debug.Log("Failed to call the on loaded event for the setting '" + setting.Key + "'.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)

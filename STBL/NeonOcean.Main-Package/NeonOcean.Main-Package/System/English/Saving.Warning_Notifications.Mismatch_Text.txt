@@ -1,0 +1,4 @@
+One or more mods have loaded save data with an ID that does match the game's save data ID. This is probably not intentional, but if it is, this warning will likely not appear again if you save the game.
+
+Offending saving identifiers:
+{0.String}

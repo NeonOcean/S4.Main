@@ -1,6 +1,6 @@
-import functools
-import sys
+import collections
 import types
+import inspect
 import typing
 
 import enum
@@ -27,11 +27,6 @@ class _Information:
 		else:
 			self.OriginalName = originalCallable.__qualname__  # type: str
 
-		if isinstance(self.OriginalCallable, types.MethodType):
-			self.OriginalReloadable = False
-		else:
-			self.OriginalReloadable = True
-
 		self.TargetFunction = targetFunction  # type: typing.Callable
 		# noinspection PyUnresolvedReferences
 		self.TargetModule = targetFunction.__module__  # type: str
@@ -54,96 +49,6 @@ class _Information:
 			elif module == self.OriginalModule:
 				self.OriginalCallable = None
 
-	def OnReload (self, modules: list) -> None:
-		if self.Permanent:
-			return
-
-		if self.OriginalModule in modules and self.OriginalCallable is None:
-			self._ReconnectOriginal()
-
-		if self.OriginalModule in modules and self.TargetFunction is None:
-			self._ReconnectTarget()
-
-	def _ReconnectOriginal (self) -> None:
-		if self.OriginalReloadable:
-			return
-
-		try:
-			currentObject = sys.modules[self.OriginalModule]  # type
-			path = self.OriginalName.split(".")  # type: typing.List[str]
-			callObject = None  # type: typing.Callable
-
-			for index, attribute in enumerate(path):  # type: str
-				try:
-					currentObject = getattr(currentObject, attribute)
-				except:
-					Debug.Log("Cannot find attribute '" + attribute + "' in '" + Types.GetFullName(currentObject), This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
-
-				if index != len(path) - 1:
-					if not isinstance(currentObject, type):
-						Debug.Log("Cannot reconnect original callable, path is not followable.", This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__)
-						return
-				else:
-					if isinstance(currentObject, types.BuiltinFunctionType):
-						if self.OriginalName != currentObject.__name__:
-							Debug.Log("Reconnected original '" + Types.GetFullName(currentObject) + "' name no longer match. Expected name: '" + self.OriginalName + "' Reconnected name: '" + currentObject.__name__ + "'.", This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__)
-							return
-
-						callObject = currentObject
-					elif isinstance(currentObject, types.FunctionType):
-						if self.OriginalName != currentObject.__name__:
-							Debug.Log("Reconnected original '" + Types.GetFullName(currentObject) + "' name no longer match. Expected name: '" + self.OriginalName + "' Reconnected name: '" + currentObject.__qualname__ + "'.", This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__)
-							return
-
-						callObject = currentObject
-					else:
-						Debug.Log("Reconnected original '" + Types.GetFullName(currentObject) + "' is no longer a function or built-in function.", This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__)
-						return
-
-			if callObject is not None:
-				self.OriginalCallable = callObject
-				setattr(self.OriginalModule, self.OriginalName, _Wrapper(self))
-		except:
-			Debug.Log("Failed to reconnect patch original.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
-			return
-
-	def _ReconnectTarget (self) -> None:
-		try:
-			currentObject = sys.modules[self.TargetModule]
-			path = self.TargetName.split(".")  # type: typing.List[str]
-			callObject = None  # type: typing.Callable
-
-			for index, attribute in enumerate(path):  # type: str
-				try:
-					currentObject = getattr(currentObject, attribute)
-				except:
-					Debug.Log("Cannot find attribute '" + attribute + "' in '" + Types.GetFullName(currentObject), This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
-
-				if index != len(path) - 1:
-					if not isinstance(currentObject, type):
-						Debug.Log("Cannot reconnect target function path is not followable.", This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__)
-						return
-				else:
-					if isinstance(currentObject, types.BuiltinFunctionType):
-						if self.TargetName != currentObject.__name__:
-							Debug.Log("Reconnected target '" + Types.GetFullName(currentObject) + "' name no longer match. Expected name: '" + self.TargetName + "' Reconnected name: '" + currentObject.__name__ + "'.", This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__)
-							return
-						callObject = currentObject
-					elif isinstance(currentObject, types.FunctionType):
-						if self.TargetName != currentObject.__name__:
-							Debug.Log("Reconnected target '" + Types.GetFullName(currentObject) + "' name no longer match. Expected name: '" + self.TargetName + "' Reconnected name: '" + currentObject.__qualname__ + "'.", This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__)
-							return
-						callObject = currentObject
-					else:
-						Debug.Log("Reconnected target '" + Types.GetFullName(currentObject) + "' is no longer a built-in function or function.", This.Mod.Namespace, Debug.LogLevels.Error, group = This.Mod.Namespace, owner = __name__)
-						return
-
-			if callObject is not None:
-				self.TargetFunction = callObject
-		except:
-			Debug.Log("Failed to reconnect patch target.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
-			return
-
 def OnUnload (mod: Mods.Mod, exiting: bool) -> None:
 	if exiting:
 		return
@@ -151,18 +56,16 @@ def OnUnload (mod: Mods.Mod, exiting: bool) -> None:
 	for patchInfo in _storage:  # type: _Information
 		patchInfo.OnUnload(mod.Modules)
 
-def OnReload (mod: Mods.Mod) -> None:
-	for patchInfo in _storage:  # type: _Information
-		patchInfo.OnReload(mod.Modules)
-
 def Decorator (originalObject, originalCallableName: str, patchType: PatchTypes = PatchTypes.After, permanent: bool = False) -> typing.Callable:
 	"""
-	Combine a function with another function or method into one replacing the original. The target can only be a function or a built in function.
+	Combine a function with another function or method, the original callable located in the original object will then be replaced by the patch automatically.
+	The target can only be a function or a built in function.
 	:param originalObject: The object the original callable resides in.
+	:type originalObject: typing.Any
 	:param originalCallableName: The name of the callable to be combined, Can be a reference to a function, built in function, or method.
 	:type originalCallableName: str
 	:param patchType: Controls when the original callable is called. A value of PatchTypes.Custom requires that the target callable take an extra argument
-					  for its first, The extra argument will be a reference to the original callable.
+					  in the first argument position. The extra argument will be a reference to the original callable.
 	:type patchType: PatchTypes
 	:param permanent: Whether or not the patch will be disabled if the mod the patching function resides in is unloaded.
 	:type permanent: bool
@@ -183,19 +86,19 @@ def Decorator (originalObject, originalCallableName: str, patchType: PatchTypes 
 
 def Patch (originalObject: typing.Any, originalCallableName: str, targetFunction: typing.Callable, patchType: PatchTypes = PatchTypes.After, permanent: bool = False) -> None:
 	"""
-	Combine a function with another function or method into one replacing the original. The target can only be a function or a built in function.
+	Combine a function with another function or method, the original callable located in the original object will then be replaced by the patch automatically.
+	The target can only be a function or a built in function.
 	:param originalObject: The object the original callable resides in.
+	:type originalObject: typing.Any
 	:param originalCallableName: The name of the callable to be combined, Can be a reference to a function, built in function, or method.
 	:type originalCallableName: str
 	:param targetFunction: The function object that will be combined with the original.
 	:type targetFunction: typing.Callable
 	:param patchType: Controls when the original callable is called. A value of PatchTypes.Custom requires that the target function take an extra argument
-					  for its first, The extra argument will be a reference to the original callable.
+					  in the first argument position. The extra argument will be a reference to the original callable.
 	:type patchType: PatchTypes
-	:param permanent: Whether or not the patch will be disabled if the mod the patching function resides in is unloaded.
+	:param permanent: Whether or not the patch will be disabled if the module the patching function resides in is unloaded.
 	:type permanent: bool
-	:return: Returns the target callable.
-	:rtype: typing.Callable
 	"""
 
 	if originalObject is None:
@@ -204,30 +107,52 @@ def Patch (originalObject: typing.Any, originalCallableName: str, targetFunction
 	if not isinstance(originalCallableName, str):
 		raise Exceptions.IncorrectTypeException(originalCallableName, "originalCallableName", (str,))
 
+	originalCallable = getattr(originalObject, originalCallableName)  # type: typing.Callable
+
+	if originalCallable is None:
+		raise Exception("Cannot find attribute named '" + originalCallableName + "' in '" + Types.GetFullName(originalObject) + "'.")
+
+	patchedFunction = PatchDirectly(originalCallable, targetFunction, patchType = patchType, permanent = permanent)
+	setattr(originalObject, originalCallableName, patchedFunction)
+
+def PatchDirectly (originalCallable: typing.Callable, targetFunction: typing.Callable, patchType: PatchTypes = PatchTypes.After, permanent: bool = False) -> typing.Callable:
+	"""
+	Combine a function with another function or method, the patched function will be returned upon completion. The target can only be a function or a built
+	in function.
+	:param originalCallable: The original callable object to be patched.
+	:param targetFunction: The function object that will be combined with the original.
+	:type targetFunction: typing.Callable
+	:param patchType: Controls when the original callable is called. A value of PatchTypes.Custom requires that the target function take an extra argument
+					  in the first argument position. The extra argument will be a reference to the original callable.
+	:type patchType: PatchTypes
+	:param permanent: Whether or not the patch will be disabled if the module the patching function resides in is unloaded.
+	:type permanent: bool
+	:return: Returns the patched function.
+	:rtype: typing.Callable
+	"""
+
+	if not isinstance(originalCallable, types.BuiltinFunctionType) and not isinstance(originalCallable, types.FunctionType) and not isinstance(originalCallable, types.MethodType):
+		raise Exception(Types.GetFullName(originalCallable) + " is not a function, built-in function or a method.")
+
 	if not isinstance(targetFunction, types.FunctionType) and not isinstance(targetFunction, types.BuiltinFunctionType):
 		raise Exceptions.IncorrectTypeException(targetFunction, "targetFunction", (types.FunctionType, types.BuiltinFunctionType))
 
 	if not isinstance(patchType, PatchTypes):
 		raise Exceptions.IncorrectTypeException(patchType, "patchType", (PatchTypes,))
 
-	originalCallable = getattr(originalObject, originalCallableName)  # type: typing.Callable
-
-	if originalCallable is None:
-		raise Exception("Cannot find attribute named '" + originalCallableName + "' in '" + Types.GetFullName(originalObject) + "'.")
-
-	if not isinstance(originalCallable, types.BuiltinFunctionType) and not isinstance(originalCallable, types.FunctionType) and not isinstance(originalCallable, types.MethodType):
-		raise Exception("Attribute '" + originalCallableName + "' in '" + Types.GetFullName(originalObject) + "' is not a function, built-in function or a method.")
+	if not isinstance(permanent, bool):
+		raise Exceptions.IncorrectTypeException(permanent, "permanent", (bool,))
 
 	information = _Information(originalCallable, targetFunction, patchType, permanent)  # type: _Information
-	setattr(originalObject, originalCallableName, _Wrapper(information))
+	patchedFunction = _Wrapper(information)
 	_storage.append(information)
+
+	return patchedFunction
 
 def _Setup () -> None:
 	Events.RegisterOnModUnload(OnUnload)
-	Events.RegisterOnModReload(OnReload)
 
 def _Wrapper (information: _Information) -> typing.Callable:
-	@functools.wraps(information.OriginalCallable)
 	def _WrapperInternal (*args, **kwargs):
 		if information.PatchType == PatchTypes.After:
 			return _After(*args, **kwargs)
@@ -305,6 +230,73 @@ def _Wrapper (information: _Information) -> typing.Callable:
 			else:
 				Debug.Log("Failed to call target function '" + Types.GetFullName(information.TargetFunction) + "'. Original callable: '" + originalCallableFullName + "'.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__, exception = exception)
 
-	return _WrapperInternal
+	return _CreateDummyWrapper(information.OriginalCallable, _WrapperInternal)
+
+def _CreateDummyWrapper (originalCallable: typing.Callable, targetCallable: typing.Callable) -> typing.Callable:
+	"""
+	Create a dummy function that looks more like the original but funnels the arguments through the target.
+	"""
+
+	# noinspection SpellCheckingInspection
+	dummyFormattingTemplate = \
+		"import functools\n" \
+		"\n" \
+		"@functools.wraps(originalCallable)\n" \
+		"def DummyWrapper ({Arguments}):\n" \
+		"	return targetCallable({CallArguments})"
+
+	originalSignature = inspect.signature(originalCallable)  # type: inspect.Signature
+
+	originalArgumentsString = ""
+	targetCallArgumentsString = ""
+
+	originalArguments = originalSignature.parameters  # type: collections.OrderedDict
+	originalDefaults = dict()  # type: typing.Dict[str, typing.Any]
+
+	for originalArgument in originalArguments.values():  # type: inspect.Parameter
+		originalArgumentString = originalArgument.name
+		targetCallArgumentString = originalArgument.name
+
+		if originalArgument.kind == originalArgument.KEYWORD_ONLY:
+			targetCallArgumentString = targetCallArgumentString + " = " + targetCallArgumentString
+		elif originalArgument.kind == originalArgument.VAR_POSITIONAL:
+			originalArgumentString = "*" + originalArgumentString
+			targetCallArgumentString = "*" + targetCallArgumentString
+		elif originalArgument.kind == originalArgument.VAR_KEYWORD:
+			originalArgumentString = "**" + originalArgumentString
+			targetCallArgumentString = "**" + targetCallArgumentString
+
+		if originalArgument.default is not inspect.Signature.empty:
+			originalDefaults[originalArgument.name] = originalArgument.default
+			originalArgumentString += " = originalDefaults['" + originalArgument.name + "']"
+
+		if originalArgumentsString != "":
+			originalArgumentString = ", " + originalArgumentString
+
+		if targetCallArgumentsString != "":
+			targetCallArgumentString = ", " + targetCallArgumentString
+
+		originalArgumentsString += originalArgumentString
+		targetCallArgumentsString += targetCallArgumentString
+
+	dummyFormatting = {
+		"Name": originalCallable.__name__,
+		"Arguments": originalArgumentsString,
+		"CallArguments": targetCallArgumentsString
+	}
+
+	dummyContainerGlobals = {
+		"originalCallable": originalCallable,
+		"originalDefaults": originalDefaults,
+		"targetCallable": targetCallable
+	}
+
+	dummyContainerLocals = dict()
+
+	dummyExecutionString = dummyFormattingTemplate.format_map(dummyFormatting)  # type: str
+	exec(dummyExecutionString, dummyContainerGlobals, dummyContainerLocals)
+	dummyWrapper = dummyContainerLocals["DummyWrapper"] # type: typing.Callable
+
+	return dummyWrapper
 
 _Setup()

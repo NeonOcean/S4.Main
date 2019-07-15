@@ -8,3 +8,4 @@ class UnloadingCauses(enum.Int):
 	Normal = 0  # type: UnloadingCauses
 	Reloading = 1  # type: UnloadingCauses
 	Exiting = 2  # type: UnloadingCauses
+	FatalError = 3  # type: UnloadingCauses

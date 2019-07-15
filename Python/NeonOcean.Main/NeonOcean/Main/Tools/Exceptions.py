@@ -2,8 +2,8 @@ import typing
 
 from NeonOcean.Main.Tools import Types
 
-class IncorrectTypeException(TypeError):
-	def __init__ (self, value, valueName: str, correctTypes: typing.Tuple[typing.Union[type, str, None], ...]):
+class IncorrectTypeException(Exception):
+	def __init__ (self, value, valueName: str, correctTypes: typing.Tuple[typing.Union[type, str, None], ...], *additional):
 		"""
 		This exception will display error messages such as: 'Expected type 'builtins.str' not 'builtins.int' for 'parameter 1'."
 
@@ -28,27 +28,17 @@ class IncorrectTypeException(TypeError):
 			if not isinstance(correctTypes[correctTypeIndex], type) and not (not isinstance(correctTypes[correctTypeIndex], type) and isinstance(correctTypes[correctTypeIndex], str)):
 				raise IncorrectTypeException(correctTypes[correctTypeIndex], "correctTypes[%d]" % correctTypeIndex, (type, str))
 
-		self._valueType = type(value)  # type: type
+		self._value = value  # type: type
 		self._valueName = valueName  # type: str
 		self._correctTypes = correctTypes  # type: typing.Tuple[typing.Union[type, str], typing.Any]
+		self._additional = additional  # type: typing.Tuple[typing.Any, ...]
+
+		super().__init__((value, valueName, correctTypes, *additional))
 
 	def __str__ (self):
-		correctString = "'{}'" + (", '{}'" * (len(self._correctTypes) - 2) if len(self._correctTypes) > 2 else "") + (" or '{}'" if len(self._correctTypes) > 1 else "")
+		return GetIncorrectTypeExceptionText(self._value, self._valueName, self._correctTypes, *self._additional)
 
-		formatList = list()
-
-		for correctTypeIndex in range(0, len(self._correctTypes)):
-			if isinstance(self._correctTypes[correctTypeIndex], type):
-				formatList.append(Types.GetFullName(self._correctTypes[correctTypeIndex]))
-			elif isinstance(self._correctTypes[correctTypeIndex], str):
-				formatList.append(self._correctTypes[correctTypeIndex])
-
-		formatList.append(Types.GetFullName(self._valueType))
-		formatList.append(self._valueName)
-
-		return ("Expected type " + correctString + " not '{}' for '{}'.").format(*formatList)
-
-def GetIncorrectTypeExceptionText (value, valueName: str, correctTypes: typing.Tuple[typing.Union[type, str, None], ...]):
+def GetIncorrectTypeExceptionText (value, valueName: str, correctTypes: typing.Tuple[typing.Union[type, str, None], ...], *additional):
 	if not isinstance(valueName, str):
 		raise IncorrectTypeException(valueName, "valueName", (str,))
 
@@ -77,4 +67,9 @@ def GetIncorrectTypeExceptionText (value, valueName: str, correctTypes: typing.T
 	formatList.append(Types.GetFullName(valueType))
 	formatList.append(valueName)
 
-	return ("Expected type " + correctString + " not '{}' for '{}'.").format(*formatList)
+	exceptionString = ("Expected type " + correctString + " not '{}' for '{}'").format(*formatList)
+
+	for additionalObject in additional:  # type: typing.Any
+		exceptionString += "\n" + str(additionalObject)
+
+	return exceptionString

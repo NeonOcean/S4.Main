@@ -1,7 +1,7 @@
 import typing
 
-from NeonOcean.Main import Mods
-from NeonOcean.Main.Tools import Exceptions
+from NeonOcean.Main import Mods, Debug, This
+from NeonOcean.Main.Tools import Exceptions, Types
 
 _onModUnloadLevels = list()  # type: typing.List[Level]
 _onModReloadLevels = list()  # type: typing.List[Level]
@@ -27,7 +27,10 @@ class Level:
 		"""
 
 		for callback in self.Callbacks:
-			callback(*args, **kwargs)
+			try:
+				callback(*args, **kwargs)
+			except Exception:
+				Debug.Log("Failed to activate callback at '" + Types.GetFullName(callback) + "'.", This.Mod.Namespace, Debug.LogLevels.Exception, group = This.Mod.Namespace, owner = __name__)
 
 	def Register (self, callback: typing.Callable) -> None:
 		"""
@@ -127,7 +130,7 @@ def RegisterOnModUnload (callback: typing.Callable, level: typing.Union[int, flo
 
 	:type callback: typing.Callable
 	:param level: Determines what order the callbacks will be called in, lower levels are called first followed by higher levels.
-					 Callbacks with the same level will be called in the order they were registered.
+				  Callbacks with the same level will be called in the order they were registered.
 	:type level: int | float
 	:rtype: None
 	"""
