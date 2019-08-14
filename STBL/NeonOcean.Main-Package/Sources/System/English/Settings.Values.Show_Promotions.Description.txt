@@ -1,1 +1,0 @@
-If enabled, Main may occasionally show a notification to promote things like new mods or major updates. All promotions will only ever be shown once.

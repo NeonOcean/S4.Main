@@ -1,1 +1,0 @@
-If a mod is enabled, a notification will be shown whenever an update is available.

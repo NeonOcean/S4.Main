@@ -1,1 +1,0 @@
-Any newly added mods will take this value as their default in the setting Check For Updates.

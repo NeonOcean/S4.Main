@@ -1,1 +1,0 @@
-Select from two presets, preview update checking enabled for all mods or no mods. Alternatively you can change the settings for individual mods by going to 'Customize'. If a mod is enabled, preview updates will be reported along with release updates. The setting "Check For Updates" still needs to be enabled for the desired mod in order to check for updates.

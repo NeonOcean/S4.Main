@@ -1,4 +1,0 @@
-One or more mods at least partially failed to load their save game data. 
-
-Offending saving identifiers:
-{0.String}
