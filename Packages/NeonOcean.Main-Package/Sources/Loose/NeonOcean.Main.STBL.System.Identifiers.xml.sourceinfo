@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <SourceInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 	<Name>NeonOcean.Main.STBL.System.Identifiers</Name>
-	<Type>7DF2169C</Type>
-	<Group>3F7A0001</Group>
-	<Instance>E32492E90E1C8B01</Instance>
+	<TypeID>2113017500</TypeID>
+	<GroupID>1064960001</GroupID>
+	<InstanceID>16367368475433011969</InstanceID>
 </SourceInfo>
