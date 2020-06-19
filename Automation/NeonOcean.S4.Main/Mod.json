@@ -1,0 +1,25 @@
+{
+	"Namespace": "NeonOcean.S4.Main",
+	"Name": "Main",
+	"Information": "NeonOcean.S4.Main/NeonOcean.S4.Main-NeonOcean-Mod.json",
+	"Packages": [
+		{
+			"FileName": "NeonOcean.S4.Main-Package.package",
+			"MergeRoot": "NeonOcean.S4.Main"
+		}
+	],
+	"Publishing": {
+		"InstallerFileName": "NeonOcean.S4.Main-Installer-v{0}.exe",
+		"FilesFileName": "NeonOcean.S4.Main-Files-v{0}.zip",
+		"SourcesFileName": "NeonOcean.S4.Main-Sources-v{0}.zip"
+	},
+	"Python": {
+		"ArchiveFileName": "NeonOcean.S4.Main.ts4script",
+		"SourceRoot": "",
+		"SourceTarget": "NeonOcean",
+		"SourceExcluded": [],
+		"MergeRoot": "NeonOcean.S4.Main"
+	},
+	"Uninstall": "NeonOcean.S4.Main/Uninstall.exe",
+	"UninstallFiles": "NeonOcean.S4.Main/Files.txt"
+}

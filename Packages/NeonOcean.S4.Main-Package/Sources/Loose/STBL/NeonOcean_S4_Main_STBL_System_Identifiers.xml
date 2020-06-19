@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Main_STBL_System_Identifiers" s="16367368475433011969" i="snippet" m="snippets" c="NeonoceanS4GlobalLanguageIdentifiers">
+	<L n="value">
+		<U>
+			<T n="key">NeonOcean.S4.Main.Debug.Write_Failure_Notification.Text</T>
+			<T n="value">2688371308</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Debug.Write_Failure_Notification.Title</T>
+			<T n="value">3872543869</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Distribution.Promotions.Default.Button</T>
+			<T n="value">1917080259</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Distribution.Promotions.Default.Title</T>
+			<T n="value">3437846422</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Distribution.Updates_List.Row_Description</T>
+			<T n="value">2236195221</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Distribution.Updates_List.Row_Description.Preview_Type</T>
+			<T n="value">2194823390</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Distribution.Updates_List.Row_Description.Release_Type</T>
+			<T n="value">3405429233</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Distribution.Updates_List.Row_Text</T>
+			<T n="value">3957669226</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Distribution.Updates_List.Text</T>
+			<T n="value">2933568113</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Distribution.Updates_List.Title</T>
+			<T n="value">2475765679</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Distribution.Updates_Notification.Button</T>
+			<T n="value">773790552</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Distribution.Updates_Notification.Text</T>
+			<T n="value">2782677201</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Distribution.Updates_Notification.Title</T>
+			<T n="value">2521995782</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Generic_Dialogs.About_Mod_Dialog.Ok_Button</T>
+			<T n="value">1881248120</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Generic_Dialogs.About_Mod_Dialog.Text</T>
+			<T n="value">1779789096</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Generic_Dialogs.About_Mod_Dialog.Title</T>
+			<T n="value">3157720888</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Generic_Dialogs.About_Mod_Dialog.Unknown</T>
+			<T n="value">1359435723</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Generic_Dialogs.Open_Browser_Dialog.No_Button</T>
+			<T n="value">3112416682</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Generic_Dialogs.Open_Browser_Dialog.Text</T>
+			<T n="value">428220524</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Generic_Dialogs.Open_Browser_Dialog.Yes_Button</T>
+			<T n="value">494723391</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Interaction_Categories.Debug</T>
+			<T n="value">547645497</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Interaction_Categories.Main</T>
+			<T n="value">2058627662</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Interaction_Categories.NeonOcean</T>
+			<T n="value">294089445</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Interactions.Debug.Select_Save.Display_Name</T>
+			<T n="value">592118521</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Interactions.Global.Support_NeonOcean.Display_Name</T>
+			<T n="value">2315556564</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Interactions.Global.Visit_NeonOcean_Site.Display_Name</T>
+			<T n="value">2285617695</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Interactions.Settings.Mod_Settings.Display_Name</T>
+			<T n="value">2849037196</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Interactions.Standard.About_Mod.Display_Name</T>
+			<T n="value">2770357462</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Interactions.Standard.Documentation.Display_Name</T>
+			<T n="value">2206841189</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Interactions.Standard.Reset.Display_Name</T>
+			<T n="value">2387917909</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Interactions.Standard.Visit_Mod_Page.Display_Name</T>
+			<T n="value">2023042510</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Interactions.Support.Dependent.Disabled_Tooltip</T>
+			<T n="value">2020374594</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Loading.Cascade_Failure_Notification.Text</T>
+			<T n="value">1068989300</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Loading.Cascade_Failure_Notification.Title</T>
+			<T n="value">1167632632</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Loading.Failure_Notification.Text</T>
+			<T n="value">1528345801</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Loading.Failure_Notification.Title</T>
+			<T n="value">2236883493</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Loading.Invalid_Setup_Notification.Text</T>
+			<T n="value">787326040</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Loading.Invalid_Setup_Notification.Title</T>
+			<T n="value">1241361516</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Loading.Not_Loaded_Notification.Text</T>
+			<T n="value">541334616</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Loading.Not_Loaded_Notification.Title</T>
+			<T n="value">287181901</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Settings.List.Paths.Root.Description</T>
+			<T n="value">1700976858</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Settings.List.Title</T>
+			<T n="value">1141247622</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Settings.Values.Check_For_Preview_Updates.Description</T>
+			<T n="value">3141814295</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Settings.Values.Check_For_Preview_Updates.Key_Template</T>
+			<T n="value">3566942016</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Settings.Values.Check_For_Preview_Updates.Name</T>
+			<T n="value">2148260899</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Settings.Values.Check_For_Preview_Updates.Preset_Description</T>
+			<T n="value">1262353506</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Settings.Values.Check_For_Preview_Updates.Value_Template</T>
+			<T n="value">85829584</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Settings.Values.Check_For_Preview_Updates_Default.Description</T>
+			<T n="value">1349066852</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Settings.Values.Check_For_Preview_Updates_Default.Name</T>
+			<T n="value">2095510909</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Settings.Values.Check_For_Updates.Description</T>
+			<T n="value">2844347258</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Settings.Values.Check_For_Updates.Key_Template</T>
+			<T n="value">2735491881</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Settings.Values.Check_For_Updates.Name</T>
+			<T n="value">3185005146</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Settings.Values.Check_For_Updates.Preset_Description</T>
+			<T n="value">2903611308</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Settings.Values.Check_For_Updates.Value_Template</T>
+			<T n="value">124177031</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Settings.Values.Check_For_Updates_Default.Description</T>
+			<T n="value">4291028098</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Settings.Values.Check_For_Updates_Default.Name</T>
+			<T n="value">2747867135</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Settings.Values.Show_Promotions.Description</T>
+			<T n="value">2809387772</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Settings.Values.Show_Promotions.Name</T>
+			<T n="value">3574582702</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Reset.Confirm_Dialog.Everything_Text</T>
+			<T n="value">1707525708</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Reset.Confirm_Dialog.No_Button</T>
+			<T n="value">1903972557</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Reset.Confirm_Dialog.Settings_Text</T>
+			<T n="value">3665527182</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Reset.Confirm_Dialog.Title</T>
+			<T n="value">271565313</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Reset.Confirm_Dialog.Yes_Button</T>
+			<T n="value">1778057160</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Reset.Dialog.Cancel_Button</T>
+			<T n="value">2222916378</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Reset.Dialog.Everything_Button</T>
+			<T n="value">3549731979</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Reset.Dialog.Settings_Button</T>
+			<T n="value">917916835</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Reset.Dialog.Text</T>
+			<T n="value">390686620</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Reset.Dialog.Title</T>
+			<T n="value">1483791726</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Failure_Notifications.Commit_Text</T>
+			<T n="value">4174207648</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Failure_Notifications.Load_Text</T>
+			<T n="value">1844243748</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Failure_Notifications.Mod_Load_Text</T>
+			<T n="value">1327250903</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Failure_Notifications.Mod_Save_Text</T>
+			<T n="value">4201284989</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Failure_Notifications.Mod_Unload_Text</T>
+			<T n="value">4168885570</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Failure_Notifications.Save_Text</T>
+			<T n="value">1675676268</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Failure_Notifications.Title</T>
+			<T n="value">1319045633</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Saving_First_Time_Notifications.Text</T>
+			<T n="value">1750005734</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Saving_First_Time_Notifications.Title</T>
+			<T n="value">249917681</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Select_Save_Dialog.Description_Currently_Loaded</T>
+			<T n="value">4069879668</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Select_Save_Dialog.Description_Match.Matches</T>
+			<T n="value">3137966238</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Select_Save_Dialog.Description_Match.Mismatch_Game_Tick</T>
+			<T n="value">4125923897</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Select_Save_Dialog.Description_Match.Mismatch_GUID</T>
+			<T n="value">308240460</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Select_Save_Dialog.Description_Match.Unknown</T>
+			<T n="value">525161049</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Select_Save_Dialog.Description_Normal</T>
+			<T n="value">2806446535</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Select_Save_Dialog.Text</T>
+			<T n="value">2456322197</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Select_Save_Dialog.Title</T>
+			<T n="value">2623076178</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Warning_Notifications.Mismatch_Game_Tick_Text</T>
+			<T n="value">1223320938</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Warning_Notifications.Mismatch_GUID_Text</T>
+			<T n="value">854024124</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Saving.Warning_Notifications.Title</T>
+			<T n="value">2570050120</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Dialogs.Apply_Button</T>
+			<T n="value">2004428869</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Dialogs.Back_Button</T>
+			<T n="value">2964364247</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Dialogs.Cancel_Button</T>
+			<T n="value">2819215232</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Dialogs.Choice_Button</T>
+			<T n="value">3827548930</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Dialogs.Description_Parts.Default</T>
+			<T n="value">1526356936</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Dialogs.Description_Parts.Documentation</T>
+			<T n="value">3803313022</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Dialogs.Description_Parts.Overridden</T>
+			<T n="value">2181026595</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Dialogs.Description_Parts.Overridden_Value</T>
+			<T n="value">1876542750</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Dialogs.Invalid_Input_Notification.Text</T>
+			<T n="value">2834896300</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Dialogs.Invalid_Input_Notification.Title</T>
+			<T n="value">4195495932</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Dialogs.Preset.Customize_Button</T>
+			<T n="value">1107030220</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Dialogs.Preset_Confirm_Dialog.No_Button</T>
+			<T n="value">357110736</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Dialogs.Preset_Confirm_Dialog.Text</T>
+			<T n="value">1848052005</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Dialogs.Preset_Confirm_Dialog.Title</T>
+			<T n="value">3653191099</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Dialogs.Preset_Confirm_Dialog.Yes_Button</T>
+			<T n="value">665033797</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Lists.Reset_All.Button.Description</T>
+			<T n="value">1416957382</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Lists.Reset_All.Button.Text</T>
+			<T n="value">3320419849</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Lists.Reset_All.Confirm_Dialog.Description</T>
+			<T n="value">3824872605</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Lists.Reset_All.Confirm_Dialog.No_Button</T>
+			<T n="value">4090471301</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Lists.Reset_All.Confirm_Dialog.Title</T>
+			<T n="value">432559380</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Lists.Reset_All.Confirm_Dialog.Yes_Button</T>
+			<T n="value">609887931</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Lists.Row_Parts.Setting.Overridden</T>
+			<T n="value">842384371</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Lists.Row_Parts.Setting.Value</T>
+			<T n="value">3458550744</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Lists.Title</T>
+			<T n="value">2367589708</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Setting_Lists.Title_Template</T>
+			<T n="value">2825919304</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Settings.Misc.Override.Unknown_Reason</T>
+			<T n="value">3977148354</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Settings.Types.Boolean.Enabled_Disabled.False</T>
+			<T n="value">2282086433</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Settings.Types.Boolean.Enabled_Disabled.True</T>
+			<T n="value">2596491395</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Settings.Types.Boolean.False</T>
+			<T n="value">197274219</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Settings.Types.Boolean.True</T>
+			<T n="value">994567696</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Settings.Types.Boolean.Yes_No.False</T>
+			<T n="value">3402200235</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Settings.Types.Boolean.Yes_No.True</T>
+			<T n="value">4068163688</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Settings.Types.Check_For_Updates.All_Mods_Enabled</T>
+			<T n="value">2778146668</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Settings.Types.Check_For_Updates.Customized</T>
+			<T n="value">3810746138</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Settings.Types.Check_For_Updates.No_Mods_Enabled</T>
+			<T n="value">37549936</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Text_Builder.Formatting</T>
+			<T n="value">544319692</T>
+		</U>
+	</L>
+</I>

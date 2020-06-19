@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Main_Interactions_Debug_Select_Save" s="13691212241367030082" i="interaction" m="NeonOcean.S4.Main.Interactions.Debug" c="SelectSaveInteraction">
+	<T n="display_name">592118521</T>
+	<T n="category">3943480538732244261<!--PieMenuCategory: NeonOcean_S4_Main_Interaction_Categories_Debug--></T>
+	<V n="_saveable" t="disabled" />
+	<L n="basic_extras">
+		<V t="do_command">
+			<U n="do_command">
+				<T n="command">neonocean.s4.main.debug.show_select_save_dialog</T>
+			</U>
+		</V>
+	</L>
+	<L n="ObjectRegistrationInformation">
+		<V t="byType">
+			<U n="byType">
+				<L n="Types">
+					<T>Humans</T>
+				</L>
+			</U>
+		</V>
+	</L>
+</I>

@@ -1,0 +1,2 @@
+NeonOceanID = 4719607191068539616  # type: int
+ModID = 12549383167398389681  # type: int

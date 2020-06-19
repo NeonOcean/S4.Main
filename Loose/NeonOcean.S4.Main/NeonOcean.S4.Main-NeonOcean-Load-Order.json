@@ -1,0 +1,63 @@
+[
+	{
+		"Level": -5000,
+		"Paths": [
+			{
+				"Root": "Current",
+				"Path": "NeonOcean.S4.Main.ts4script"
+			}
+		],
+		"Functions": [
+			{
+				"Module": "NeonOcean.S4.Main.Loading",
+				"Function": "PauseAutoLoad",
+				"Arguments": [ ],
+				"KeywordArguments": { }
+			},
+			{
+				"Module": "NeonOcean.S4.Main.Loading",
+				"Function": "DisableModAutoLoad",
+				"Arguments": [ "NeonOcean.S4.Main" ],
+				"KeywordArguments": { }
+			},
+			{
+				"Module": "NeonOcean.S4.Main.Loading",
+				"Function": "LoadMod",
+				"Arguments": [ "NeonOcean.S4.Main" ],
+				"KeywordArguments": { }
+			}
+		]
+	},
+	
+	{
+		"Level": 0,
+		
+		"Functions": [
+			{
+				"Module": "NeonOcean.S4.Main.Loading",
+				"Function": "UnpauseAutoLoad",
+				"Arguments": [ ],
+				"KeywordArguments": { }
+			},
+			{
+				"Module": "NeonOcean.S4.Main.Loading",
+				"Function": "LoadAll",
+				"Arguments": [ ],
+				"KeywordArguments": { }
+			}
+		]
+	},
+	
+	{
+		"Level": Infinity,
+		
+		"Functions": [
+			{
+				"Module": "NeonOcean.S4.Main.Loading",
+				"Function": "ForceLoadAll",
+				"Arguments": [ ],
+				"KeywordArguments": { }
+			}
+		]
+	}
+]

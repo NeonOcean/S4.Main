@@ -1,0 +1,20 @@
+{
+	"Namespace": "NeonOcean.S4.Main",
+	"Name": "Main",
+	"Author": "NeonOcean",
+	"Version": "2.0.0",
+	"Rating": "Normal",
+	"LoadController": "NeonOcean.S4.Main",
+	"Distribution": {
+		"UpdatesController": "NeonOcean",
+		"UpdatesFileURL": "http://dist.mods.neonoceancreations.com/mods/latest.json",
+		"DownloadURL": "https://www.neonoceancreations.com/mods/s4/main",
+		"PreviewDownloadURL": "https://www.patreon.com/NeonOcean/posts?tag=Main%20Preview"
+	},
+	"ScriptPaths": [
+		{
+			"Root": "Current",
+			"Path": "NeonOcean.S4.Main.ts4script"
+		}
+	]
+}

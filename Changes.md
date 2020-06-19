@@ -1,3 +1,40 @@
+## v2.0.0 ()
+
+### Mod Information Files
+- Mod information file names no longer need to start with 'NeonOcean-Mod' it just needs to contain it.
+- Version numbers now follow the semantic versioning specification. https://semver.org/
+- Changed the format of the 'Distribution' value in mod information files.
+
+### New Features
+- Added new event system.
+- Added new object saving system.
+- A new debug interaction allows users to load specific mod save folders, in the event an incorrect one is loaded.
+- Added in-game notifications to warn players when any mod save does not match the game's save.
+- Settings are now listed in dialog instead of an interaction menu.
+- Created settings list dialog framework which this mod moved over to using.
+- Users can now be notified of mod updates without requiring the creation of python code.
+
+### Changes
+- Changed this mod's namespace from NeonOcean.Main to NeonOcean.S4.Main.
+- Saving objects can no longer register themselves to a saving object handler, it should now be done manually.
+- Saving objects now take the save file paths as parameters for loading and saving methods instead of save slot ids.
+- Improved new debug logging to prevent the build up of large log files.
+- Added icons to some mod interactions and interaction categories.
+- Only one update notification is now shown for all outdated mods, users can select mod websites to visit from a picker dialog.
+- Reworked the interaction object registration system, it now supports different object interactions lists.
+
+### Fixed bugs
+- Persistence objects for saving sections no longer break when loading non existent data in the saving section.
+- The built in saving handler now correctly logs and warns the player about save failures.
+- Mod save backups will now correctly follow their tied game backups when overriding a save.
+- \_\_init\_\_ modules are now correctly handled by the loading system.
+- Fixed mod documentation links.
+- Patched functions and methods will now return a value when patched in the custom or replace modes.
+- Main will no longer incorrectly warn about python-less mods not being loaded.
+- Mods without a load order file will now still load even if the mod Order is installed.
+
+______________________________
+
 ## v1.3.0 (July 15, 2019)
 ### New Features
 - New systems now allow for the saving of data that is tied to a Sims 4 save file.

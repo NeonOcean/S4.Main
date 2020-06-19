@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Main_Interactions_Settings_Mod_Settings" s="5491664016274400993" i="interaction" m="NeonOcean.S4.Main.Interactions.Settings" c="ModSettingsInteraction">
+	<T n="display_name">2849037196</T>
+	<T n="category">12549383167398389681<!--PieMenuCategory: NeonOcean_S4_Main_Interaction_Categories_Main--></T>
+	<V n="_saveable" t="disabled" />
+	<L n="basic_extras">
+		<V t="do_command">
+			<U n="do_command">
+				<T n="command">neonocean.s4.main.settings.show_list</T>
+			</U>
+		</V>
+	</L>
+	<V n="pie_menu_icon" t="enabled">
+		<V n="enabled" t="resource_key">
+			<U n="resource_key">
+				<T n="key">00B2D882:00000000:49058FBF95FC3353</T>
+			</U>
+		</V>
+	</V>
+	<L n="ObjectRegistrationInformation">
+		<V t="byType">
+			<U n="byType">
+				<L n="Types">
+					<T>Humans</T>
+				</L>
+			</U>
+		</V>
+	</L>
+</I>
