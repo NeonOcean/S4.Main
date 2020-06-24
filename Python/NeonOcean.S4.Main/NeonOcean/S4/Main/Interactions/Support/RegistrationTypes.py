@@ -11,6 +11,12 @@ from NeonOcean.S4.Main.Tools import Exceptions, Python
 from objects import definition, definition_manager, script_object
 from sims4 import resources
 
+_computerTag = tag.Tag("Func_Computer")  # type: tag.Tag
+_mailboxTag = tag.Tag("Func_Mailbox")  # type: tag.Tag
+_singleBedTag = tag.Tag("Func_SingleBed")  # type: tag.Tag
+_doubleBedTag = tag.Tag("Func_DoubleBed")  # type: tag.Tag
+_toiletTag = tag.Tag("Func_Toilet")  # type: tag.Tag
+
 class ObjectTypeOrganizer:
 	Host = This.Mod  # type: Mods.Mod
 
@@ -98,7 +104,7 @@ class ObjectTypeOrganizer:
 
 		operationTime = time.time() - operationStartTime
 		cls._objectTypesDetermined = True
-		Debug.Log("Finished organizing all objects by type in %s seconds with %s object definitions existing." % (operationTime, len(objectDefinitions)), cls.Host.Namespace, Debug.LogLevels.Info, group = cls.Host.Namespace, owner = __name__)
+		Debug.Log("Finished organizing all objects by type in %s seconds with %s type determiners and %s object definitions existing." % (operationTime, len(cls._typeDeterminers), len(objectDefinitions)), cls.Host.Namespace, Debug.LogLevels.Info, group = cls.Host.Namespace, owner = __name__)
 
 class _Announcer(Director.Announcer):
 	Host = This.Mod
@@ -125,6 +131,7 @@ def _Setup () -> None:
 	ObjectTypeOrganizer.RegisterTypeDeterminer("Mailboxes", _MailBoxDeterminer)
 	ObjectTypeOrganizer.RegisterTypeDeterminer("SingleBeds", _SingleBedDeterminer)
 	ObjectTypeOrganizer.RegisterTypeDeterminer("DoubleBeds", _DoubleBedDeterminer)
+	ObjectTypeOrganizer.RegisterTypeDeterminer("Toilets", _ToiletDeterminer)
 
 # noinspection PyUnusedLocal
 def _EverythingDeterminer (objectDefinition: definition.Definition) -> bool:
@@ -156,19 +163,18 @@ def _CatsDeterminer (objectDefinition: definition.Definition) -> bool:
 
 # noinspection PyUnusedLocal
 def _ComputerDeterminer (objectDefinition: definition.Definition) -> bool:
-	computerTag = tag.Tag("Func_Computer")  # type: tag.Tag
-	return objectDefinition.has_build_buy_tag(computerTag)
+	return objectDefinition.has_build_buy_tag(_computerTag)
 
 def _MailBoxDeterminer (objectDefinition: definition.Definition) -> bool:
-	mailboxTag = tag.Tag("Func_Mailbox")  # type: tag.Tag
-	return objectDefinition.has_build_buy_tag(mailboxTag)
+	return objectDefinition.has_build_buy_tag(_mailboxTag)
 
 def _SingleBedDeterminer (objectDefinition: definition.Definition) -> bool:
-	singleBedTag = tag.Tag("Func_SingleBed")  # type: tag.Tag
-	return objectDefinition.has_build_buy_tag(singleBedTag)
+	return objectDefinition.has_build_buy_tag(_singleBedTag)
 
 def _DoubleBedDeterminer (objectDefinition: definition.Definition) -> bool:
-	doubleBedTag = tag.Tag("Func_DoubleBed")  # type: tag.Tag
-	return objectDefinition.has_build_buy_tag(doubleBedTag)
+	return objectDefinition.has_build_buy_tag(_doubleBedTag)
+
+def _ToiletDeterminer (objectDefinition: definition.Definition) -> bool:
+	return objectDefinition.has_build_buy_tag(_toiletTag)
 
 _Setup()

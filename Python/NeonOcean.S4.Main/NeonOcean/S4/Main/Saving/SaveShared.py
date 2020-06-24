@@ -225,7 +225,6 @@ class Save(Saving.SaveBase):
 
 				self._loadedFileExisted = True
 				self._currentFilePath = saveFilePath
-
 			except Exception:
 				operationTime = time.time() - operationStartTime  # type: float
 				Debug.Log("Load operation in a saving object aborted, falling back to the default. (Operation took " + str(operationTime) + " seconds)\n" + operationInformation, self.Host.Namespace, Debug.LogLevels.Warning, group = self.Host.Namespace, owner = __name__)

@@ -17,9 +17,9 @@ _commitNextSave = False  # type: bool
 
 class _AnnouncerPreemptive(Director.Announcer):
 	Host = This.Mod
-	Level = -50
-
 	Preemptive = True
+
+	_priority = 50
 
 	@classmethod
 	def OnEnterMainMenu (cls) -> None:
@@ -31,7 +31,8 @@ class _AnnouncerPreemptive(Director.Announcer):
 
 class _Announcer(Director.Announcer):
 	Host = This.Mod
-	Level = -50
+
+	_priority = 50
 
 	@classmethod
 	def ZoneLoad (cls, zoneReference: zone.Zone) -> None:

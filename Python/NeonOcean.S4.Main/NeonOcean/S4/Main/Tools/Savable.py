@@ -469,7 +469,7 @@ class StaticSavableAttributeHandler(AttributeHandlerBase):
 			attributeData = data[self._savingKey]  # type: typing.Optional[dict]
 
 		if not isinstance(attributeData, dict):
-			raise Exceptions.IncorrectTypeException(attributeData, "data[%s]" % attributeName, (dict,))
+			raise Exceptions.IncorrectTypeException(attributeData, "data[%s]" % self._savingKey, (dict,))
 
 		attributeValue = getattr(loadingObject, attributeName)
 
@@ -603,10 +603,10 @@ class DynamicSavableAttributeHandler(AttributeHandlerBase):
 
 		if self._nullable:
 			if not isinstance(attributeData, dict) and attributeData is not None:
-				raise Exceptions.IncorrectTypeException(attributeData, "data[%s]" % attributeName, (dict, None))
+				raise Exceptions.IncorrectTypeException(attributeData, "data[%s]" % self._savingKey, (dict, None))
 		else:
 			if not isinstance(attributeData, dict):
-				raise Exceptions.IncorrectTypeException(attributeData, "data[%s]" % attributeName, (dict,))
+				raise Exceptions.IncorrectTypeException(attributeData, "data[%s]" % self._savingKey, (dict,))
 
 		if attributeData is None:
 			setattr(loadingObject, attributeName, None)
@@ -765,10 +765,10 @@ class ListedSavableAttributeHandler(DynamicSavableAttributeHandler):
 
 		if self._nullable:
 			if not isinstance(attributeListData, list) and attributeListData is not None:
-				raise Exceptions.IncorrectTypeException(attributeListData, "data[%s]" % attributeName, (list, None))
+				raise Exceptions.IncorrectTypeException(attributeListData, "data[%s]" % self._savingKey, (list, None))
 		else:
 			if not isinstance(attributeListData, list):
-				raise Exceptions.IncorrectTypeException(attributeListData, "data[%s]" % attributeName, (list,))
+				raise Exceptions.IncorrectTypeException(attributeListData, "data[%s]" % self._savingKey, (list,))
 
 		if attributeListData is None:
 			setattr(loadingObject, attributeName, None)
@@ -780,16 +780,16 @@ class ListedSavableAttributeHandler(DynamicSavableAttributeHandler):
 					entryContainerData = attributeListData[entryDataIndex]  # type: dict
 
 					if not isinstance(entryContainerData, dict):
-						raise Exceptions.IncorrectTypeException(entryContainerData, "data[%s][%s]" % (attributeName, entryDataIndex), (dict,))
+						raise Exceptions.IncorrectTypeException(entryContainerData, "data[%s][%s]" % (self._savingKey, entryDataIndex), (dict,))
 
 					entryData = entryContainerData[self._dataSavingKey]  # type: typing.Optional[dict]
 
-					if self._nullable:
+					if self._entriesNullable:
 						if not isinstance(entryData, dict) and entryData is not None:
-							raise Exceptions.IncorrectTypeException(entryData, "data[%s][%s][%s]" % (attributeName, entryDataIndex, self._dataSavingKey), (dict, None))
+							raise Exceptions.IncorrectTypeException(entryData, "data[%s][%s][%s]" % (self._savingKey, entryDataIndex, self._dataSavingKey), (dict, None))
 					else:
 						if not isinstance(entryData, dict):
-							raise Exceptions.IncorrectTypeException(entryData, "data[%s][%s][%s]" % (attributeName, entryDataIndex, self._dataSavingKey), (dict,))
+							raise Exceptions.IncorrectTypeException(entryData, "data[%s][%s][%s]" % (self._savingKey, entryDataIndex, self._dataSavingKey), (dict,))
 
 					if entryData is None:
 						attributeValue.append(None)
@@ -798,7 +798,7 @@ class ListedSavableAttributeHandler(DynamicSavableAttributeHandler):
 							entryTypeIdentifier = entryContainerData[self._typeSavingKey]  # type: str
 
 							if not isinstance(entryTypeIdentifier, str):
-								raise Exceptions.IncorrectTypeException(entryTypeIdentifier, "data[%s][%s][%s]" % (attributeName, entryDataIndex, self._typeSavingKey), (str,))
+								raise Exceptions.IncorrectTypeException(entryTypeIdentifier, "data[%s][%s][%s]" % (self._savingKey, entryDataIndex, self._typeSavingKey), (str,))
 
 							entryValue = self._savableCreator(entryTypeIdentifier)  # type: SavableExtension
 						else:
@@ -811,7 +811,7 @@ class ListedSavableAttributeHandler(DynamicSavableAttributeHandler):
 							operationSuccessful = False
 
 						attributeValue.append(entryValue)
-				except Exception as e:
+				except:
 					if self._requiredEntrySuccess:
 						raise
 					else:
@@ -849,7 +849,7 @@ class ListedSavableAttributeHandler(DynamicSavableAttributeHandler):
 						if self._skipEntrySaveTest(entryValue):
 							continue
 
-					if self._nullable:
+					if self._entriesNullable:
 						if not isinstance(entryValue, SavableExtension) and entryValue is not None:
 							raise Exceptions.IncorrectTypeException(entryValue, "savingObject.%s[%s]" % (attributeName, entryIndex), (SavableExtension, None))
 					else:
@@ -875,7 +875,7 @@ class ListedSavableAttributeHandler(DynamicSavableAttributeHandler):
 
 						entryContainerData[self._dataSavingKey] = entryData
 						attributeData.append(entryContainerData)
-				except Exception as e:
+				except:
 					if self._requiredEntrySuccess:
 						raise
 					else:

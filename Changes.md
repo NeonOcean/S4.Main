@@ -1,4 +1,9 @@
-## v2.0.0 ()
+## v2.0.1 (June 24, 2020)
+
+### Fixed bugs
+- Fixed announcer priorities.
+
+## v2.0.0 (June 19, 2020)
 
 ### Mod Information Files
 - Mod information file names no longer need to start with 'NeonOcean-Mod' it just needs to contain it.
