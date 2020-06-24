@@ -55,8 +55,8 @@ def _GetS4UserDataPath () -> str:
 
 	moduleFilePath = os.path.normpath(__file__)  # type: str
 
-	s4Directories = os.path.normpath("electronic Arts\\the sims 4")  # type: str
-	s4DirectoriesMods = os.path.join(s4Directories, "mods")  # type: str
+	s4Directories = os.path.normpath("electronic Arts/the sims 4")  # type: str
+	s4DirectoriesMods = os.path.normpath(os.path.join(s4Directories, "mods"))  # type: str
 	s4DirectoriesStartIndex = moduleFilePath.lower().rfind(s4DirectoriesMods.lower())
 
 	if s4DirectoriesStartIndex != -1:
@@ -64,7 +64,7 @@ def _GetS4UserDataPath () -> str:
 
 		return moduleFilePath[:s4DirectoriesEndIndex]
 
-	raise Exception("Cannot find The Sims 4 user data path")
+	raise Exception("Cannot find The Sims 4 user data path.\nModule Root: %s\nS4 Directories: %s\nS4 Directories Mods: %s" % (moduleRootPath, s4Directories, s4DirectoriesMods))
 
 def _Setup () -> None:
 	global ModuleRootPath, UserDataPath, ModsPath, SavesPath, DebugPath, PersistentPath, TemporaryPath

@@ -1,3 +1,8 @@
+## v2.0.2 (June 24, 2020)
+
+### Fixed bugs
+- Fixed a critical bug for mac computers - We can now correctly find the mods folder.
+
 ## v2.0.1 (June 24, 2020)
 
 ### Fixed bugs
