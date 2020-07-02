@@ -188,9 +188,11 @@ class SettingStandardWrapper(SettingWrapper):
 		return self.Setting.GetSettingIconKey()
 
 class SettingsSystemStandardWrapper(SettingSystemWrapper):
-	def __init__ (self, settingSystem: typing.Any,
+	def __init__ (self,
+				  settingSystem: typing.Any,
 				  settings: typing.List[SettingStandardWrapper],
-				  save: typing.Callable[[], None], update: typing.Callable[[], None]):
+				  save: typing.Callable[[], None],
+				  update: typing.Callable[[], None]):
 
 		"""
 		A wrapper for the standard settings system used by NeonOcean
@@ -243,7 +245,7 @@ class SettingBranchWrapper(SettingWrapper):
 		if not isinstance(setting, type):
 			raise Exceptions.IncorrectTypeException(setting, "setting", (type,))
 
-		if not issubclass(setting, AbstractSettings.SettingAbstract):
+		if not issubclass(setting, AbstractSettings.SettingBranchedAbstract):
 			raise Exceptions.DoesNotInheritException("setting", (AbstractSettings.SettingBranchedAbstract,))
 
 		if not isinstance(branch, str):
@@ -322,8 +324,11 @@ class SettingBranchWrapper(SettingWrapper):
 		return self.Setting.GetSettingIconKey(self.Branch)
 
 class SettingsSystemBranchWrapper(SettingSystemWrapper):
-	def __init__ (self, settingSystem: typing.Any,
-				  save: typing.Callable[[], None], update: typing.Callable[[], None], settings: typing.List[SettingBranchWrapper]):
+	def __init__ (self,
+				  settingSystem: typing.Any,
+				  settings: typing.List[SettingBranchWrapper],
+				  save: typing.Callable[[], None],
+				  update: typing.Callable[[], None]):
 
 		"""
 		A wrapper for the branch settings system used by NeonOcean

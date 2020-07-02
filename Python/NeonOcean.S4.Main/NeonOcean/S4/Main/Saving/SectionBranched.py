@@ -115,6 +115,23 @@ class SectionBranched(Saving.SectionBase):
 
 		return allValues
 
+	def ValueExists (self, branch: str, key: str) -> bool:
+		"""
+		Get whether or not a value exists under this branch and key pair.
+		"""
+
+		if branch in self._loadedData:
+			return False
+
+		return key in self._loadedData[branch]
+
+	def BranchExists (self, branch: str) -> bool:
+		"""
+		Get whether or not any data exists in this branch.
+		"""
+
+		return branch in self._loadedData
+
 	def Set (self, branch: str, key: str, value) -> None:
 		"""
 		Set the value of the section data specified by the key and branch. The value is deep copied before being but into storage, modifying the value after setting

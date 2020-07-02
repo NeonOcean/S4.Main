@@ -266,8 +266,7 @@ class Save(Saving.SaveBase):
 		self._loadedDefault = True
 
 		operationTime = time.time() - operationStartTime  # type: float
-		Debug.Log("Load default operation in a saving object finished without issue. (Operation took " + str(operationTime) + " seconds)\n" + operationInformation, self.Host.Namespace, Debug.LogLevels.Info, group = self.Host.Namespace,
-				  owner = __name__)
+		Debug.Log("Load default operation in a saving object finished without issue. (Operation took " + str(operationTime) + " seconds)\n" + operationInformation, self.Host.Namespace, Debug.LogLevels.Info, group = self.Host.Namespace, owner = __name__)
 
 	def Save (self, saveFilePath: str) -> bool:
 		"""

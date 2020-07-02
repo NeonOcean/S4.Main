@@ -1,3 +1,11 @@
+## v2.0.3 (July 2, 2020)
+
+### Saving Sections
+- It is now possible to check if a branch or value of a branch exists without getting the value.
+
+### Fixed bugs
+- It is now possible to show settings dialogs for branched settings (Such as sim specific settings).
+
 ## v2.0.2 (June 24, 2020)
 
 ### Fixed bugs
