@@ -111,13 +111,13 @@ class _Announcer(Director.Announcer):
 
 	_priority = 4000  # type: int
 
-	_zoneLoadTriggered = False  # type: bool
+	_zoneStartServicesTriggered = False  # type: bool
 
 	@classmethod
-	def ZoneLoad (cls, zoneReference: zone.Zone) -> None:
-		if not cls._zoneLoadTriggered and not ObjectTypeOrganizer.ObjectTypesDetermined():
+	def ZoneStartServices(cls, zoneReference: zone.Zone, gameplayZoneData: typing.Any, saveSlotData: typing.Any) -> None:
+		if not cls._zoneStartServicesTriggered and not ObjectTypeOrganizer.ObjectTypesDetermined():
 			ObjectTypeOrganizer.DetermineAllObjectTypes()
-			cls._zoneLoadTriggered = True
+			cls._zoneStartServicesTriggered = True
 
 def _Setup () -> None:
 	ObjectTypeOrganizer.RegisterTypeDeterminer("Everything", _EverythingDeterminer)

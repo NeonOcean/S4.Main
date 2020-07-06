@@ -110,6 +110,10 @@ def _ZoneSaveWrapper (announcementMethod: typing.Callable, self, save_slot_data 
 	announcementMethod(self, saveSlotData = save_slot_data)
 
 # noinspection PyUnusedLocal
+def _ZoneStartServicesWrapper (announcementMethod: typing.Callable, self, gameplay_zone_data, save_slot_data, *args, **kwargs) -> None:
+	announcementMethod(self, gameplay_zone_data, save_slot_data)
+
+# noinspection PyUnusedLocal
 def _ZoneOnToreDownWrapper (announcementMethod: typing.Callable, self, client, *args, **kwargs) -> None:
 	announcementMethod(self, client)
 
@@ -137,6 +141,7 @@ _onClientDisconnect = _Announcement(services, "on_client_disconnect", Director.A
 _onEnterMainMenu = _Announcement(services, "on_enter_main_menu", Director.Announcer.OnEnterMainMenu.__name__, announcementCallWrapper = _OnEnterMainMenuWrapper)
 _zoneLoad = _Announcement(zone.Zone, "load_zone", Director.Announcer.ZoneLoad.__name__, announcementCallWrapper = _ZoneLoadWrapper)
 _zoneSave = _Announcement(zone.Zone, "save_zone", Director.Announcer.ZoneSave.__name__, announcementCallWrapper = _ZoneSaveWrapper)
+_zoneStartServices = _Announcement(zone.Zone, "start_services", Director.Announcer.ZoneStartServices.__name__, announcementCallWrapper = _ZoneStartServicesWrapper)
 _zoneOnToreDown = _Announcement(zone.Zone, "on_teardown", Director.Announcer.ZoneOnToreDown.__name__, announcementCallWrapper = _ZoneOnToreDownWrapper)
 _zoneUpdate = _Announcement(zone.Zone, "update", Director.Announcer.ZoneUpdate.__name__, announcementCallWrapper = _ZoneUpdateWrapper, limitErrors = True)
 _serviceManagerOnZoneLoad = _Announcement(service_manager.ServiceManager, "on_zone_load", Director.Announcer.ServiceManagerOnZoneLoad.__name__, announcementCallWrapper = _ServiceManagerOnZoneLoadWrapper)

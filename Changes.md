@@ -1,3 +1,11 @@
+## v2.0.4 (July 6, 2020)
+
+### Mod Support
+- Using MCCC's auto save feature no longer breaks save files created by Main.
+- WickedWhims no longer causes interactions registered with Main to not appear on objects unless they are re-bought.
+
+______________________________
+
 ## v2.0.3 (July 2, 2020)
 
 ### Saving Sections
@@ -6,15 +14,21 @@
 ### Fixed bugs
 - It is now possible to show settings dialogs for branched settings (Such as sim specific settings).
 
+______________________________
+
 ## v2.0.2 (June 24, 2020)
 
 ### Fixed bugs
 - Fixed a critical bug for mac computers - We can now correctly find the mods folder.
 
+______________________________
+
 ## v2.0.1 (June 24, 2020)
 
 ### Fixed bugs
 - Fixed announcer priorities.
+
+______________________________
 
 ## v2.0.0 (June 19, 2020)
 

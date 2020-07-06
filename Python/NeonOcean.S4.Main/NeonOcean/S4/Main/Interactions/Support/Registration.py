@@ -234,13 +234,13 @@ class _Announcer(Director.Announcer):
 
 	_priority = 3000  # type: int
 
-	_zoneLoadTriggered = False  # type: bool
+	_zoneStartServicesTriggered = False  # type: bool
 
 	@classmethod
-	def ZoneLoad (cls, zoneReference: zone.Zone) -> None:
-		if not cls._zoneLoadTriggered:
+	def ZoneStartServices (cls, zoneReference: zone.Zone, gameplayZoneData: typing.Any, saveSlotData: typing.Any) -> None:
+		if not cls._zoneStartServicesTriggered:
 			RegisterInteractionsToObjects()
-			cls._zoneLoadTriggered = True
+			cls._zoneStartServicesTriggered = True
 
 def RegisterInteractionsToObjects () -> None:
 	operationStartTime = time.time()  # type: float

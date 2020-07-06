@@ -39,6 +39,10 @@ class Announcer:
 		pass
 
 	@classmethod
+	def InstanceManagerLoadDataIntoClassInstances (cls, instanceManager: instance_manager.InstanceManager) -> None:
+		pass
+
+	@classmethod
 	def InstanceManagerOnStop (cls, instanceManager: instance_manager.InstanceManager) -> None:
 		pass
 
@@ -64,6 +68,10 @@ class Announcer:
 
 	@classmethod
 	def ZoneSave (cls, zoneReference: zone.Zone, saveSlotData: typing.Optional[FileSerialization_pb2.SaveSlotData] = None) -> None:
+		pass
+
+	@classmethod
+	def ZoneStartServices (cls, zoneReference: zone.Zone, gameplayZoneData: FileSerialization_pb2.GameplayData, saveSlotData: FileSerialization_pb2.SaveSlotData) -> None:
 		pass
 
 	@classmethod
