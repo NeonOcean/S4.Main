@@ -1,4 +1,12 @@
-## v2.0.4 (July 6, 2020)
+## v2.0.5 (July 16, 2020)
+
+### Fixed bugs
+- Fixed bug that caused the mod to fail because it couldn't find the sims 4 folder when using certain languages.
+
+______________________________
+
+
+## v2.0.4 (July 5, 2020)
 
 ### Mod Support
 - Using MCCC's auto save feature no longer breaks save files created by Main.
