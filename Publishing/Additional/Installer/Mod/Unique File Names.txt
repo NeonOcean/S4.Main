@@ -1,0 +1,8 @@
+NeonOcean.S4.Main.ts4script
+NeonOcean.S4.Main-License.html
+NeonOcean.S4.Main-NeonOcean-Load-Order.json
+NeonOcean.S4.Main-NeonOcean-Mod.json
+NeonOcean.S4.Main-Package.package
+NeonOcean.S4.Main-Uninstall-Files.txt
+NeonOcean.S4.Main-Uninstall.exe
+NeonOcean.S4.Main-Uninstall.exe.config
