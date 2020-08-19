@@ -1,3 +1,14 @@
+## v2.1.0 (August 19, 2020)
+
+### Changes
+- The next and current version is now listed in mod update notifications.
+- Improved promotion capabilities.
+
+### Fixed bugs
+- Object interaction registration now differentiates regular toilets from toilet stalls, as regular toilet interactions do not work on toilet stalls.
+
+______________________________
+
 ## v2.0.5 (July 16, 2020)
 
 ### Fixed bugs

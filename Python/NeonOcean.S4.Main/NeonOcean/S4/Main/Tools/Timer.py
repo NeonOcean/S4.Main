@@ -12,7 +12,7 @@ class Timer(threading.Thread):
 		"""
 		A repeatable timer that does not drift over time. The timer is not exact and will likely be a few milliseconds late or early.
 		It is recommended to not set the timer's interval to be shorter than the time the callback function will take to run.
-		:param interval: Type = int or float, Time in seconds until the callback value is called. It should be greater than zero.
+		:param interval: Time in seconds until the callback value is called. It should be greater than zero.
 		:type interval: float | int
 		:param callback: Called after the timer is finished. Callbacks will be run in succession, if one cannot finish before the next one is queued by the timer
 		a backlog will develop.

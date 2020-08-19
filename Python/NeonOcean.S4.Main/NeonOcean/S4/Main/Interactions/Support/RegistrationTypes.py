@@ -11,6 +11,8 @@ from NeonOcean.S4.Main.Tools import Exceptions, Python
 from objects import definition, definition_manager, script_object
 from sims4 import resources
 
+RegistrationTagSetAttributeName = "NeonOceanRegistrationCachedTagSet"  # type: str
+
 _computerTag = tag.Tag("Func_Computer")  # type: tag.Tag
 _mailboxTag = tag.Tag("Func_Mailbox")  # type: tag.Tag
 _singleBedTag = tag.Tag("Func_SingleBed")  # type: tag.Tag
@@ -132,6 +134,15 @@ def _Setup () -> None:
 	ObjectTypeOrganizer.RegisterTypeDeterminer("SingleBeds", _SingleBedDeterminer)
 	ObjectTypeOrganizer.RegisterTypeDeterminer("DoubleBeds", _DoubleBedDeterminer)
 	ObjectTypeOrganizer.RegisterTypeDeterminer("Toilets", _ToiletDeterminer)
+	ObjectTypeOrganizer.RegisterTypeDeterminer("ToiletStalls", _ToiletStallDeterminer)
+
+def _GetOrCreateObjectDefinitionTagSet (objectDefinition: definition.Definition) -> typing.Set[tag.Tag]:
+	objectDefinitionTags = getattr(objectDefinition, RegistrationTagSetAttributeName, None)  # type: typing.Optional[typing.Set[tag.Tag]]
+
+	if objectDefinitionTags is None:
+		objectDefinitionTags = set(objectDefinition.build_buy_tags)  # type: typing.Set[tag.Tag]
+
+	return objectDefinitionTags
 
 # noinspection PyUnusedLocal
 def _EverythingDeterminer (objectDefinition: definition.Definition) -> bool:
@@ -163,18 +174,61 @@ def _CatsDeterminer (objectDefinition: definition.Definition) -> bool:
 
 # noinspection PyUnusedLocal
 def _ComputerDeterminer (objectDefinition: definition.Definition) -> bool:
-	return objectDefinition.has_build_buy_tag(_computerTag)
+	objectDefinitionTags = _GetOrCreateObjectDefinitionTagSet(objectDefinition)  # type: typing.Set[tag.Tag]
+	return _computerTag in objectDefinitionTags
 
 def _MailBoxDeterminer (objectDefinition: definition.Definition) -> bool:
-	return objectDefinition.has_build_buy_tag(_mailboxTag)
+	objectDefinitionTags = _GetOrCreateObjectDefinitionTagSet(objectDefinition)  # type: typing.Set[tag.Tag]
+	return _mailboxTag in objectDefinitionTags
 
 def _SingleBedDeterminer (objectDefinition: definition.Definition) -> bool:
-	return objectDefinition.has_build_buy_tag(_singleBedTag)
+	objectDefinitionTags = _GetOrCreateObjectDefinitionTagSet(objectDefinition)  # type: typing.Set[tag.Tag]
+	return _singleBedTag in objectDefinitionTags
 
 def _DoubleBedDeterminer (objectDefinition: definition.Definition) -> bool:
-	return objectDefinition.has_build_buy_tag(_doubleBedTag)
+	objectDefinitionTags = _GetOrCreateObjectDefinitionTagSet(objectDefinition)  # type: typing.Set[tag.Tag]
+	return _doubleBedTag in objectDefinitionTags
 
 def _ToiletDeterminer (objectDefinition: definition.Definition) -> bool:
-	return objectDefinition.has_build_buy_tag(_toiletTag)
+	objectDefinitionTags = _GetOrCreateObjectDefinitionTagSet(objectDefinition)  # type: typing.Set[tag.Tag]
+
+	if not _toiletTag in objectDefinitionTags:
+		return False
+
+	# noinspection PyProtectedMember
+	objectInteractions = objectDefinition.cls._super_affordances
+
+	invalidInteractions = {
+		214054, # Toilet stall use sitting interaction
+		214055,  # Toilet stall use standing interaction
+		144848  # Toddler chair use interaction
+	}
+
+	for objectInteraction in objectInteractions:
+		if getattr(objectInteraction, "guid64", 0) in invalidInteractions:
+			return False
+
+	return True
+
+def _ToiletStallDeterminer (objectDefinition: definition.Definition) -> bool:
+	objectDefinitionTags = _GetOrCreateObjectDefinitionTagSet(objectDefinition)  # type: typing.Set[tag.Tag]
+
+	if not _toiletTag in objectDefinitionTags:
+		return False
+
+	# noinspection PyProtectedMember
+	objectInteractions = objectDefinition.cls._super_affordances
+
+	invalidInteractions = {
+		14427,  # Toilet use sitting interaction
+		14428,  # Toilet use standing interaction
+		144848  # Toddler chair use interaction
+	}
+
+	for objectInteraction in objectInteractions:
+		if getattr(objectInteraction, "guid64", 0) in invalidInteractions:
+			return False
+
+	return True
 
 _Setup()

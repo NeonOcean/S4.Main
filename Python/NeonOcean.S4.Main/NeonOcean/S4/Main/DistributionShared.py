@@ -16,7 +16,7 @@ from NeonOcean.S4.Main import Debug, Director, Language, LoadingShared, Mods, Pa
 from NeonOcean.S4.Main.Tools import Exceptions, Parse, Timer, Version
 from NeonOcean.S4.Main.UI import Notifications
 from sims4 import collections
-from ui import ui_dialog
+from ui import ui_dialog, ui_dialog_notification
 
 _updateDistributors = list()  # type: typing.List[UpdateDistributor]
 _promotionDistributors = list()  # type: typing.List[PromotionDistributor]
@@ -435,10 +435,10 @@ class UpdateDistributor(Distributor):
 			response_command = responseCommand
 		)
 
-		updatedModsText = updatedMods[0].ModName  # type: str
+		updatedModsText = "%s, v%s > v%s" % (updatedMods[0].ModName, updatedMods[0].CurrentVersion, updatedMods[0].NewVersion)  # type: str
 
 		for updatedMod in updatedMods[1:]:  # type: UpdateInformation
-			updatedModsText += "\n" + updatedMod.ModName
+			updatedModsText += "\n%s, v%s > v%s" % (updatedMod.ModName, updatedMod.CurrentVersion, updatedMod.NewVersion)
 
 		notificationArguments = {
 			"title": self.UpdatesNotificationTitle.GetCallableLocalizationString(),
@@ -470,6 +470,7 @@ class PromotionDistributor(Distributor):
 		_modsKey = "Mods"  # type: str
 		_modsTypeKey = "ModsType"  # type: str
 		_ratingKey = "Rating"  # type: str
+		_waitForKey = "WaitFor"  # type: str
 		_linkKey = "Link"  # type: str
 		_s4TitleKey = "S4Title"  # type: str
 		_s4TextKey = "S4Text"  # type: str
@@ -533,6 +534,22 @@ class PromotionDistributor(Distributor):
 			except Exception:
 				Debug.Log("Failed to parse rating type from '" + ratingString + "'. Promotion: " + self.Identifier, This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__)
 				self.Rating = Mods.Rating.Normal
+
+			waitForString = promotionDictionary.get(self._waitForKey, None)  # type: typing.Optional[str]
+
+			try:
+				if waitForString is None:
+					self.WaitFor = None
+				else:
+					waitForValue = float(waitForString)  # type: typing.Optional[float]
+
+					if waitForValue < 0:
+						raise ValueError("Wait for values must be greater than or equal to 0.")
+
+					self.WaitFor = waitForValue
+			except Exception:
+				Debug.Log("Failed to parse wait for time from '" + waitForString + "'. Promotion: " + self.Identifier, This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__)
+				self.WaitFor = None
 
 			self.Link = promotionDictionary.get(self._linkKey)  # type: typing.Optional[str]
 
@@ -633,6 +650,8 @@ class PromotionDistributor(Distributor):
 
 		self._shownPromotionsFilePath = os.path.join(Paths.PersistentPath, "Distribution", self.DistributionIdentifier, "ShownPromotions.json")  # type: str
 
+		self._waitForTimer = None  # type: typing.Optional[Timer.Timer]
+
 		self.LoadShownPromotions()
 
 		_RegisterPromotionDistributor(self)
@@ -679,11 +698,23 @@ class PromotionDistributor(Distributor):
 			Debug.Log("Failed to find a promotion.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__)
 			return
 
-		try:
-			self._ShowPromotion(chosenPromotion)
-		except Exception:
-			Debug.Log("Failed to show promotion notification for promotion '" + chosenPromotion.Identifier + "'.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__)
-			return
+		if chosenPromotion.WaitFor is not None and chosenPromotion.WaitFor != 0:
+			def waitForTimerCallback():
+				try:
+					self._ShowPromotion(chosenPromotion)
+				except Exception:
+					Debug.Log("Failed to show promotion notification for promotion '" + chosenPromotion.Identifier + "'.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__)
+					return
+
+			waitForTimer = Timer.Timer(chosenPromotion.WaitFor, waitForTimerCallback)  # type: Timer.Timer
+			waitForTimer.start()
+			self._waitForTimer = waitForTimer
+		else:
+			try:
+				self._ShowPromotion(chosenPromotion)
+			except Exception:
+				Debug.Log("Failed to show promotion notification for promotion '" + chosenPromotion.Identifier + "'.", This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__)
+				return
 
 	def _CheckPromotions (self, promotionsFileURL: str) -> typing.List[Promotion]:
 		validPromotions = list()  # type: typing.List[PromotionDistributor.Promotion]
@@ -748,7 +779,8 @@ class PromotionDistributor(Distributor):
 
 	def _ShowPromotion (self, promotion: Promotion) -> None:
 		notificationArguments = {
-			"text": lambda *args, **kwargs: Language.CreateLocalizationString(promotion.Text)
+			"text": lambda *args, **kwargs: Language.CreateLocalizationString(promotion.Text),
+			"visual_type": ui_dialog_notification.UiDialogNotification.UiDialogNotificationVisualType.SPECIAL_MOMENT
 		}
 
 		if promotion.Link is not None:
