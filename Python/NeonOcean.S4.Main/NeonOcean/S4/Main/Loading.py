@@ -32,6 +32,9 @@ CascadeFailureNotificationText = Language.String(This.Mod.Namespace + ".Mod_Load
 NotLoadedFailureNotificationTitle = Language.String(This.Mod.Namespace + ".Mod_Loading.Not_Loaded_Notification.Title")  # type: Language.String
 NotLoadedFailureNotificationText = Language.String(This.Mod.Namespace + ".Mod_Loading.Not_Loaded_Notification.Text")  # type: Language.String
 
+ModsLoadedNotificationTitle = Language.String(This.Mod.Namespace + ".Mod_Loading.Mods_Loaded_Notification.Title")  # type: Language.String
+ModsLoadedNotificationText = Language.String(This.Mod.Namespace + ".Mod_Loading.Mods_Loaded_Notification.Text")  # type: Language.String
+
 _allLoaders = list()  # type: typing.List[_Loader]
 
 _autoLoad = True  # type: bool
@@ -245,6 +248,8 @@ class _Loader:
 		return False
 
 	def _UpdateInformation(self, informationDictionary: dict) -> bool:
+		self.Mod.InformationFileRawData = informationDictionary
+
 		if not self._UpdateAuthor(informationDictionary) or \
 				not self._UpdateVersion(informationDictionary) or \
 				not self._UpdateVersionDisplay(informationDictionary) or \
@@ -377,26 +382,32 @@ class _Loader:
 			if not isinstance(scriptPaths, list):
 				raise Exceptions.IncorrectTypeException(scriptPaths, "Root[%s]" % informationKey, (list,))
 
+			scriptPathException = None  # type: typing.Optional[Exception]
+
 			for index, scriptPath in enumerate(scriptPaths):  # type: int, str
 				if not isinstance(scriptPath, str) and not isinstance(scriptPath, dict):
 					raise Exceptions.IncorrectTypeException(scriptPath, "Root[%s][%d]" % (informationKey, index), (str, dict))
 
 				if isinstance(scriptPath, dict):
 					if not scriptPathRootKey in scriptPath:
-						raise Exception("Missing dictionary entry '%s' in 'Root[%s][%d]'." % (scriptPathRootKey, informationKey, index))
+						scriptPathException = Exception("Missing dictionary entry '%s' in 'Root[%s][%d]'." % (scriptPathRootKey, informationKey, index)) if scriptPathException is None else scriptPathException
+						continue
 
 					if not scriptPathPathKey in scriptPath:
-						raise Exception("Missing dictionary entry '%s' in 'Root[%s][%d]'." % (scriptPathPathKey, informationKey, index))
+						scriptPathException = Exception("Missing dictionary entry '%s' in 'Root[%s][%d]'." % (scriptPathPathKey, informationKey, index)) if scriptPathException is None else scriptPathException
+						continue
 
 					scriptPathRoot = scriptPath[scriptPathRootKey]  # type: str
 
 					if not isinstance(scriptPathRoot, str):
-						raise Exceptions.IncorrectTypeException(scriptPathRoot, "Root[%s][%d][%s]" % (informationKey, index, scriptPathRootKey), (str,))
+						scriptPathException = Exceptions.IncorrectTypeException(scriptPathRoot, "Root[%s][%d][%s]" % (informationKey, index, scriptPathRootKey), (str,)) if scriptPathException is None else scriptPathException
+						continue
 
 					scriptPathPath = scriptPath[scriptPathPathKey]  # type: str
 
 					if not isinstance(scriptPathPath, str):
-						raise Exceptions.IncorrectTypeException(scriptPathRoot, "Root[%s][%d][%s]" % (informationKey, index, scriptPathPathKey), (str,))
+						scriptPathException = Exceptions.IncorrectTypeException(scriptPathRoot, "Root[%s][%d][%s]" % (informationKey, index, scriptPathPathKey), (str,)) if scriptPathException is None else scriptPathException
+						continue
 
 					scriptPathRootLower = scriptPathRoot.lower()
 
@@ -407,16 +418,36 @@ class _Loader:
 					elif scriptPathRootLower == "current":
 						scriptPathRootValue = self.Mod.InformationFileDirectoryPath
 					else:
-						raise Exception("'" + scriptPathPath + "' is not a valid path root, valid roots are 'mods', 's4' and 'current'.")
+						scriptPathException = Exception("'" + scriptPathPath + "' is not a valid path root, valid roots are 'mods', 's4' and 'current'.") if scriptPathException is None else scriptPathException
+						continue
 
 					scriptPaths[index] = os.path.join(scriptPathRootValue, os.path.normpath(scriptPathPath))
+
+					if not os.path.exists(scriptPaths[index]):
+						scriptPathException = Exception("'%s' does not exist. \nRoot: %s \nRoot Value: %s \nInfo File: %s \nInfo File Dir: %s" % (scriptPaths[index], scriptPathRoot, scriptPathRootValue, self.Mod.InformationFilePath, self.Mod.InformationFileDirectoryPath)) if scriptPathException is None else scriptPathException
+						continue
 				else:
 					scriptPaths[index] = os.path.join(Paths.ModsPath, os.path.normpath(scriptPath))
 
-				if not os.path.exists(scriptPaths[index]):
-					raise Exception("'" + scriptPaths[index] + "' does not exist.")
+					if not os.path.exists(scriptPaths[index]):
+						scriptPathException = Exception("'%s' does not exist. \nScript Path: %s" % (scriptPaths[index], scriptPath)) if scriptPathException is None else scriptPathException
+						continue
 
-			self.Mod.ScriptPaths = scriptPaths
+			self.Mod.ScriptPathsIncludingMissing = list(
+				set(
+					filter(
+						lambda filteringScriptPath: isinstance(filteringScriptPath, str),
+						scriptPaths
+					)
+				)
+			)
+
+			self.Mod.ScriptPaths = list(
+				filter(
+					lambda filteringScriptPath: os.path.exists(filteringScriptPath),
+					self.Mod.ScriptPathsIncludingMissing
+				)
+			)
 
 			for scriptPath in self.Mod.ScriptPaths:
 				self.Mod.Modules.extend(_GetArchiveModules(scriptPath))
@@ -1009,6 +1040,8 @@ def _PatchOnLoadingScreenAnimationFinished ():
 		from sims4 import log
 
 		try:
+			_InformOfModsLoaded()
+
 			if len(_failedLoadingMods) != 0:
 				_WarnOfLoadingFailure()
 				_failedLoadingMods = list()
@@ -1190,6 +1223,38 @@ def _WarnOfNotLoadedFailure () -> None:
 		"text": NotLoadedFailureNotificationText.GetCallableLocalizationString(badMods),
 		"expand_behavior": ui_dialog_notification.UiDialogNotification.UiDialogNotificationExpandBehavior.FORCE_EXPAND,
 		"urgency": ui_dialog_notification.UiDialogNotification.UiDialogNotificationUrgency.URGENT
+	}  # type: typing.Dict[str, ...]
+
+	Notifications.ShowNotification(queue = True, **notificationArguments)
+
+def _InformOfModsLoaded () -> None:
+	loadedModsByAuthor = dict()  # type: typing.Dict[str, typing.List[Mods.Mod]]
+
+	for mod in Mods.GetAllMods():  # type: Mods.Mod
+		if not mod.IsLoaded():
+			continue
+
+		modsAuthor = mod.Author.lower()  # type: str
+
+		if modsAuthor in loadedModsByAuthor:
+			loadedModsByAuthor[modsAuthor].append(mod)
+		else:
+			loadedModsByAuthor[modsAuthor] = [mod]
+
+	loadedMods = ""  # type: str
+
+	for modList in loadedModsByAuthor.values():  # type: typing.List[Mods.Mod]
+		if loadedMods != "":
+			loadedMods += "\n"
+
+		loadedMods += modList[0].Author + ":\n"
+
+		for mod in modList:  # type: Mods.Mod
+			loadedMods += "%s - v%s\n" % (mod.Name, mod.Version)
+
+	notificationArguments = {
+		"title": ModsLoadedNotificationTitle.GetCallableLocalizationString(),
+		"text": ModsLoadedNotificationText.GetCallableLocalizationString(loadedMods),
 	}  # type: typing.Dict[str, ...]
 
 	Notifications.ShowNotification(queue = True, **notificationArguments)

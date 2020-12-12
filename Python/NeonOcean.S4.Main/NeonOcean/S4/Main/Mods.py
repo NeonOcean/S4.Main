@@ -41,6 +41,7 @@ class Mod:
 
 		self.InformationFilePath = informationFilePath  # type: str
 		self.InformationFileDirectoryPath = os.path.dirname(self.InformationFilePath)  # type: str
+		self.InformationFileRawData = dict()  # type: dict
 
 		self._namespace = namespace  # type: str
 
@@ -57,6 +58,7 @@ class Mod:
 		self.Rating = Rating.Normal  # type: Rating
 
 		self.ScriptPaths = list()  # type: typing.List[str]
+		self.ScriptPathsIncludingMissing = list()  # type: typing.List[str]  # Unlike the attribute above, this includes the script paths that are missing. This won't include script paths we couldn't read.
 		self.Modules = list()  # type: typing.List[str]
 
 		self.RequiredMods = set()  # type: typing.Set[str]
@@ -320,15 +322,9 @@ def _Setup () -> None:
 						modName = modInformation["Name"]  # type: str
 						modLoadControl = modInformation.get("LoadController")  # type: typing.Optional[str]
 
-						duplicateMod = False  # type: bool
-
 						for mod in _allMods.values():  # type: Mod
 							if modNamespace == mod.Namespace:
-								log.exception("NeonOcean", "Duplicate mod with the namespace '" + modNamespace + "' at: \n" + modFilePath, owner = __name__)
-								duplicateMod = True
-
-						if duplicateMod:
-							continue
+								raise Exception("Duplicate mod with the namespace '" + modNamespace + "' at: \n" + modFilePath)
 
 						mod = Mod(modNamespace, modName, modLoadControl, modFilePath)
 						RegisterMod(mod)

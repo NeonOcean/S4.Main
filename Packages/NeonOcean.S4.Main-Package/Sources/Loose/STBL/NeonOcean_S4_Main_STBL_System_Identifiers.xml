@@ -82,6 +82,22 @@
 			<T n="value">494723391</T>
 		</U>
 		<U>
+			<T n="key">NeonOcean.S4.Main.Installation_Verification.Main_Missing_Mod_File_Dialog.Text</T>
+			<T n="value">3037040933</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Installation_Verification.Main_Missing_Mod_File_Dialog.Title</T>
+			<T n="value">4215308301</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Installation_Verification.Mod_Missing_Script_Files_Notification.Text</T>
+			<T n="value">979387582</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Installation_Verification.Mod_Missing_Script_Files_Notification.Title</T>
+			<T n="value">2729143438</T>
+		</U>
+		<U>
 			<T n="key">NeonOcean.S4.Main.Interaction_Categories.Debug</T>
 			<T n="value">547645497</T>
 		</U>
@@ -104,6 +120,10 @@
 		<U>
 			<T n="key">NeonOcean.S4.Main.Interactions.Global.Visit_NeonOcean_Site.Display_Name</T>
 			<T n="value">2285617695</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Interactions.Reporting.Create_Bug_Report.Display_Name</T>
+			<T n="value">2812072424</T>
 		</U>
 		<U>
 			<T n="key">NeonOcean.S4.Main.Interactions.Settings.Mod_Settings.Display_Name</T>
@@ -152,6 +172,14 @@
 		<U>
 			<T n="key">NeonOcean.S4.Main.Mod_Loading.Invalid_Setup_Notification.Title</T>
 			<T n="value">1241361516</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Loading.Mods_Loaded_Notification.Text</T>
+			<T n="value">2536097937</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Mod_Loading.Mods_Loaded_Notification.Title</T>
+			<T n="value">3800004241</T>
 		</U>
 		<U>
 			<T n="key">NeonOcean.S4.Main.Mod_Loading.Not_Loaded_Notification.Text</T>
@@ -232,6 +260,38 @@
 		<U>
 			<T n="key">NeonOcean.S4.Main.Mod_Settings.Values.Show_Promotions.Name</T>
 			<T n="value">3574582702</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Reporting.Dialogs.Prepare_Report_Location.Cancel_Button</T>
+			<T n="value">2824495663</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Reporting.Dialogs.Prepare_Report_Location.Desktop_Button</T>
+			<T n="value">3240207583</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Reporting.Dialogs.Prepare_Report_Location.Game_User_Data_Button</T>
+			<T n="value">563189278</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Reporting.Dialogs.Prepare_Report_Location.Text</T>
+			<T n="value">4001964797</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Reporting.Dialogs.Prepare_Report_Location.Title</T>
+			<T n="value">3379890126</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Reporting.Dialogs.Report_Created.Button</T>
+			<T n="value">1932260336</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Reporting.Dialogs.Report_Created.Text</T>
+			<T n="value">1282831802</T>
+		</U>
+		<U>
+			<T n="key">NeonOcean.S4.Main.Reporting.Dialogs.Report_Created.Title</T>
+			<T n="value">2347751278</T>
 		</U>
 		<U>
 			<T n="key">NeonOcean.S4.Main.Reset.Confirm_Dialog.Everything_Text</T>

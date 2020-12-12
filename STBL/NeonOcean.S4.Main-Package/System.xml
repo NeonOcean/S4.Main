@@ -126,6 +126,32 @@ Would you like to proceed?
 			<English>Yes</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Main.Installation_Verification.Main_Missing_Mod_File_Dialog.Text</Identifier>
+			<Key>3037040933</Key>
+			<English>We've found that NeonOcean's toolkit mod "Main" is missing a vital file. Please ensure you have not deleted or omitted any files that came with this mod.
+
+This issue will also break all other mods that rely on Main to function.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Main.Installation_Verification.Main_Missing_Mod_File_Dialog.Title</Identifier>
+			<Key>4215308301</Key>
+			<English>NeonOcean - Main: Missing Important Mod File</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Main.Installation_Verification.Mod_Missing_Script_Files_Notification.Text</Identifier>
+			<Key>979387582</Key>
+			<English>We've found that one or more mods is missing script files. Please ensure you have not deleted or omitted any files that came with this mod.
+
+&lt;b&gt;Offending Mods&lt;/b&gt;
+
+{0.String}</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Main.Installation_Verification.Mod_Missing_Script_Files_Notification.Title</Identifier>
+			<Key>2729143438</Key>
+			<English>NeonOcean - Main: Missing Important Mod Files</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Main.Interaction_Categories.Debug</Identifier>
 			<Key>547645497</Key>
 			<English>Debug</English>
@@ -154,6 +180,11 @@ Would you like to proceed?
 			<Identifier>NeonOcean.S4.Main.Interactions.Global.Visit_NeonOcean_Site.Display_Name</Identifier>
 			<Key>2285617695</Key>
 			<English>Visit NeonOcean's website</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Main.Interactions.Reporting.Create_Bug_Report.Display_Name</Identifier>
+			<Key>2812072424</Key>
+			<English>Create Bug Report</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Main.Interactions.Settings.Mod_Settings.Display_Name</Identifier>
@@ -223,6 +254,28 @@ The following mods had to be disabled because of this:
 			<Identifier>NeonOcean.S4.Main.Mod_Loading.Invalid_Setup_Notification.Title</Identifier>
 			<Key>1241361516</Key>
 			<English>NeonOcean - Main: Bad Mod Setup Detected</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Main.Mod_Loading.Mods_Loaded_Notification.Text</Identifier>
+			<Key>2536097937</Key>
+			<English>The following mods have been successfully loaded by NeonOcean's toolkit mod "Main".
+
+&lt;b&gt;Loaded Mods&lt;/b&gt;
+
+{0.String}
+
+
+
+
+If an expected mod doesn't appear on this list you should do the following:
+ - Check for any error notifications.
+ - Ensure you installed the mod correctly.
+ - Contact the mod creator if all else fails.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Main.Mod_Loading.Mods_Loaded_Notification.Title</Identifier>
+			<Key>3800004241</Key>
+			<English>NeonOcean - Main: Mods Loaded</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Main.Mod_Loading.Not_Loaded_Notification.Text</Identifier>
@@ -330,6 +383,48 @@ Checking URL:
 			<Identifier>NeonOcean.S4.Main.Mod_Settings.Values.Show_Promotions.Name</Identifier>
 			<Key>3574582702</Key>
 			<English>Show Promotions</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Main.Reporting.Dialogs.Prepare_Report_Location.Cancel_Button</Identifier>
+			<Key>2824495663</Key>
+			<English>Cancel</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Main.Reporting.Dialogs.Prepare_Report_Location.Desktop_Button</Identifier>
+			<Key>3240207583</Key>
+			<English>Your Desktop</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Main.Reporting.Dialogs.Prepare_Report_Location.Game_User_Data_Button</Identifier>
+			<Key>563189278</Key>
+			<English>Your 'The Sims 4' Folder</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Main.Reporting.Dialogs.Prepare_Report_Location.Text</Identifier>
+			<Key>4001964797</Key>
+			<English>Choose the where we should create the bug report file. 
+
+You will need to find the bug report in the location chosen then send it to the mod creator.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Main.Reporting.Dialogs.Prepare_Report_Location.Title</Identifier>
+			<Key>3379890126</Key>
+			<English>Where To Create The Bug Report</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Main.Reporting.Dialogs.Report_Created.Button</Identifier>
+			<Key>1932260336</Key>
+			<English>Okay</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Main.Reporting.Dialogs.Report_Created.Text</Identifier>
+			<Key>1282831802</Key>
+			<English>A bug report can now be found in the folder that you chose.</English>
+		</STBLXMLEntry>
+		<STBLXMLEntry>
+			<Identifier>NeonOcean.S4.Main.Reporting.Dialogs.Report_Created.Title</Identifier>
+			<Key>2347751278</Key>
+			<English>Bug Report Created Successfully</English>
 		</STBLXMLEntry>
 		<STBLXMLEntry>
 			<Identifier>NeonOcean.S4.Main.Reset.Confirm_Dialog.Everything_Text</Identifier>

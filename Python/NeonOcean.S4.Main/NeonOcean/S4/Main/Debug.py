@@ -12,7 +12,7 @@ import typing
 import singletons
 from NeonOcean.S4.Main import DebugShared, Paths, This
 from NeonOcean.S4.Main.DebugShared import LogLevels, Report
-from NeonOcean.S4.Main.Tools import Exceptions
+from NeonOcean.S4.Main.Tools import Exceptions, Python
 from sims4 import log
 
 # noinspection PyTypeChecker
@@ -210,6 +210,64 @@ class Logger(DebugShared.Logger):
 
 	def GetLogSizeLimit (self) -> int:
 		return 5000000
+
+	def GetLogFilesToBeReported (self) -> typing.List[str]:
+		"""
+		Get the logs to be included in a report archive file. This should be limited to only some of the more recent logs.
+		"""
+
+		reportingLogFiles = list()  # type: typing.List[str]
+
+		loggingRootPath = self.GetLoggingRootPath()
+
+		for namespaceDirectoryName in os.listdir(loggingRootPath):
+			namespaceDirectoryPath = os.path.join(loggingRootPath, namespaceDirectoryName)  # type: str
+
+			if not os.path.isdir(namespaceDirectoryPath):
+				continue
+
+			reportingLogDirectories = list()  # type: typing.List[str]
+
+			latestLogFilePath = os.path.join(namespaceDirectoryPath, "Latest.xml")  # type: str
+
+			if os.path.exists(latestLogFilePath):
+				reportingLogFiles.append(latestLogFilePath)
+
+			for logDirectoryName in reversed(os.listdir(namespaceDirectoryPath)):  # type: str
+				if len(reportingLogDirectories) >= 10:
+					break
+
+				logDirectoryPath = os.path.join(namespaceDirectoryPath, logDirectoryName)  # type: str
+
+				if not os.path.isdir(logDirectoryPath):
+					continue
+
+				try:
+					datetime.datetime.strptime(logDirectoryName, "%Y-%m-%d %H.%M.%S.%f").timestamp()  # type: float
+				except ValueError:
+					Log("Found a directory in a logging namespace that did not meet the naming convention of 'Year-Month-Day Hour.Minute.Second.Microsecond'.\nDirectory Name: %s" % logDirectoryName,
+							  This.Mod.Namespace, LogLevels.Warning, group = This.Mod.Namespace, owner = __name__, lockIdentifier = __name__ + ":" + str(Python.GetLineNumber()), lockThreshold = 1)
+					continue
+
+				reportingLogDirectories.append(logDirectoryPath)
+
+			for reportingLogDirectory in reportingLogDirectories:  # type: str
+				reportingLogFilePath = os.path.join(reportingLogDirectory, "Log.xml")  # type: str
+
+				if os.path.exists(reportingLogFilePath):
+					reportingLogFiles.append(reportingLogFilePath)
+
+				reportingSessionFilePath = os.path.join(reportingLogDirectory, "Session.json")  # type: str
+
+				if os.path.exists(reportingSessionFilePath):
+					reportingLogFiles.append(reportingSessionFilePath)
+
+				reportingModFilePath = os.path.join(reportingLogDirectory, "Mods.txt")  # type: str
+
+				if os.path.exists(reportingModFilePath):
+					reportingLogFiles.append(reportingModFilePath)
+
+		return reportingLogFiles
 
 	def _LogAllReports (self, reports: typing.List[Report]) -> None:
 		namespaceTextBytes = dict()  # type: typing.Dict[str, bytes]

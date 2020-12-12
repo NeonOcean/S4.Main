@@ -1,10 +1,8 @@
 from __future__ import annotations
 
-from __future__ import annotations
-
-from NeonOcean.S4.Main import Mods
+from NeonOcean.S4.Main import Mods, ThisNamespace
 
 try:
-	Mod = Mods.GetMod("NeonOcean.S4.Main")  # type: Mods.Mod
+	Mod = Mods.GetMod(ThisNamespace.Namespace)  # type: Mods.Mod
 except Exception as e:
 	raise Exception("Cannot find self in mod list.") from e

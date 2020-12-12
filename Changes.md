@@ -1,3 +1,18 @@
+## v2.2.0 (December 12, 2020)
+
+### Error Reporting and Warnings
+- A new interaction allows users to quickly create a bug reports.
+- New dialogs now warn users when we find that they have installed a mod incorrectly.
+- A notification showing a list of loaded mods now appears at start up. This is intended to allow users to determine when a mod hasn't loaded.
+
+### Changes
+- Improved promotion capabilities.
+
+### Fixed bugs
+- Fixed exception that occurs when logging that a duplicate mod information file exists.
+
+______________________________
+
 ## v2.1.0 (August 19, 2020)
 
 ### Changes

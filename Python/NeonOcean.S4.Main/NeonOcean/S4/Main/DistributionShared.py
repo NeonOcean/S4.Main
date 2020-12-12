@@ -465,6 +465,7 @@ class PromotionDistributor(Distributor):
 
 	class Promotion:
 		_identifierKey = "Identifier"  # type: str
+		_repeatKey = "Repeat"  # type: str
 		_targetsKey = "Targets"  # type: str
 		_targetsTypeKey = "TargetsType"  # type: str
 		_modsKey = "Mods"  # type: str
@@ -478,6 +479,12 @@ class PromotionDistributor(Distributor):
 
 		def __init__ (self, promotionDictionary: dict):
 			self.Identifier = promotionDictionary[self._identifierKey]  # type: str
+
+			self.Repeat = promotionDictionary.get(self._repeatKey, False)  # type: bool
+
+			if not isinstance(self.Repeat, bool):
+				Debug.Log("Expected type of 'bool' for promotion repeat value. Promotion: " + self.Identifier, This.Mod.Namespace, Debug.LogLevels.Warning, group = This.Mod.Namespace, owner = __name__)
+				self.Repeat = False
 
 			self.Targets = promotionDictionary.get(self._targetsKey, list())  # type: list
 
@@ -615,9 +622,10 @@ class PromotionDistributor(Distributor):
 
 			identifierLower = self.Identifier.lower()  # type: str
 
-			for shownPromotion in shownPromotions:  # type: str
-				if identifierLower == shownPromotion.lower():
-					return False
+			if not self.Repeat:
+				for shownPromotion in shownPromotions:  # type: str
+					if identifierLower == shownPromotion.lower():
+						return False
 
 			return True
 
@@ -821,7 +829,9 @@ class PromotionDistributor(Distributor):
 		Notifications.ShowNotification(queue = True, **notificationArguments)
 
 		self.ShowedPromotion = True
-		self.ShownPromotions.append(promotion.Identifier)
+
+		if not promotion.Identifier in self.ShownPromotions:
+			self.ShownPromotions.append(promotion.Identifier)
 
 		try:
 			shownPromotionsFilePath = self.ShownPromotionsFilePath  # type: str

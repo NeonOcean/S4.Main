@@ -2,7 +2,7 @@
 	"Namespace": "NeonOcean.S4.Main",
 	"Name": "Main",
 	"Author": "NeonOcean",
-	"Version": "2.1.0",
+	"Version": "2.2.0",
 	"Rating": "Normal",
 	"LoadController": "NeonOcean.S4.Main",
 	"Distribution": {

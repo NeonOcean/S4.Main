@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I n="NeonOcean_S4_Main_Interactions_Create_Bug_Report" s="8907096185270376938" i="interaction" m="NeonOcean.S4.Main.Interactions.Reporting" c="CreateBugReportInteraction">
+	<T n="display_name">2812072424</T>
+	<T n="category">4719607191068539616<!--PieMenuCategory: NeonOcean_S4_Global_Interaction_Categories_NeonOcean--></T>
+	<V n="_saveable" t="disabled" />
+	<L n="basic_extras">
+		<V t="do_command">
+			<U n="do_command">
+				<T n="command">neonocean.s4.main.reporting.show_prepare_report_location_dialog</T>
+			</U>
+		</V>
+	</L>
+	<T n="pie_menu_priority">3</T>
+	<L n="ObjectRegistrationInformation">
+		<V t="byType">
+			<U n="byType">
+				<L n="Types">
+					<T>Humans</T>
+				</L>
+			</U>
+		</V>
+	</L>
+</I>
